@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Working with Files and Directories | Introduction to the Command Line for Genomics</title>
+  <meta name="description" content="4 Working with Files and Directories | Introduction to the Command Line for Genomics" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Working with Files and Directories | Introduction to the Command Line for Genomics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="gurinina/shell-genomics" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Working with Files and Directories | Introduction to the Command Line for Genomics" />
+  
+  
+  
+
+<meta name="author" content="Guri Giaever" />
+
+
+<meta name="date" content="2022-10-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="navigating-files-and-directories.html"/>
+<link rel="next" href="redirection.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to Shell-Genomics!</a></li>
+<li class="chapter" data-level="2" data-path="introducing-the-shell.html"><a href="introducing-the-shell.html"><i class="fa fa-check"></i><b>2</b> Introducing the Shell</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introducing-the-shell.html"><a href="introducing-the-shell.html#what-is-a-shell-and-why-should-i-care"><i class="fa fa-check"></i><b>2.1</b> What is a shell and why should I care?</a></li>
+<li class="chapter" data-level="2.2" data-path="introducing-the-shell.html"><a href="introducing-the-shell.html#how-to-access-the-shell"><i class="fa fa-check"></i><b>2.2</b> How to access the shell</a></li>
+<li class="chapter" data-level="2.3" data-path="introducing-the-shell.html"><a href="introducing-the-shell.html#navigating-your-file-system"><i class="fa fa-check"></i><b>2.3</b> Navigating your file system</a></li>
+<li class="chapter" data-level="2.4" data-path="introducing-the-shell.html"><a href="introducing-the-shell.html#tip"><i class="fa fa-check"></i><b>2.4</b> Tip</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html"><i class="fa fa-check"></i><b>3</b> Navigating Files and Directories</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#moving-around-the-file-system"><i class="fa fa-check"></i><b>3.1</b> Moving around the file system</a></li>
+<li class="chapter" data-level="3.2" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#finding-hidden-directories"><i class="fa fa-check"></i><b>3.2</b> Finding hidden directories</a></li>
+<li class="chapter" data-level="3.3" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#exercise"><i class="fa fa-check"></i><b>3.3</b> Exercise</a></li>
+<li class="chapter" data-level="3.4" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#solution"><i class="fa fa-check"></i><b>3.4</b> Solution</a></li>
+<li class="chapter" data-level="3.5" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#examining-the-contents-of-other-directories"><i class="fa fa-check"></i><b>3.5</b> Examining the contents of other directories</a></li>
+<li class="chapter" data-level="3.6" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#navigating-practice"><i class="fa fa-check"></i><b>3.6</b> Navigating practice</a></li>
+<li class="chapter" data-level="3.7" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#exercise-1"><i class="fa fa-check"></i><b>3.7</b> Exercise</a></li>
+<li class="chapter" data-level="3.8" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#solution-1"><i class="fa fa-check"></i><b>3.8</b> Solution</a></li>
+<li class="chapter" data-level="3.9" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#full-vs.-relative-paths"><i class="fa fa-check"></i><b>3.9</b> Full vs. Relative Paths</a></li>
+<li class="chapter" data-level="3.10" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#relative-path-resolution"><i class="fa fa-check"></i><b>3.10</b> Relative path resolution</a></li>
+<li class="chapter" data-level="3.11" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#exercise-2"><i class="fa fa-check"></i><b>3.11</b> Exercise</a></li>
+<li class="chapter" data-level="3.12" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#solution-2"><i class="fa fa-check"></i><b>3.12</b> Solution</a>
+<ul>
+<li class="chapter" data-level="3.12.1" data-path="navigating-files-and-directories.html"><a href="navigating-files-and-directories.html#navigational-shortcuts"><i class="fa fa-check"></i><b>3.12.1</b> Navigational Shortcuts</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html"><i class="fa fa-check"></i><b>4</b> Working with Files and Directories</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#working-with-files"><i class="fa fa-check"></i><b>4.1</b> Working with Files</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#our-data-set-fastq-files"><i class="fa fa-check"></i><b>4.1.1</b> Our data set: FASTQ files</a></li>
+<li class="chapter" data-level="4.1.2" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#wildcards"><i class="fa fa-check"></i><b>4.1.2</b> Wildcards</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#exercise-3"><i class="fa fa-check"></i><b>4.2</b> Exercise</a></li>
+<li class="chapter" data-level="4.3" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#solution-3"><i class="fa fa-check"></i><b>4.3</b> Solution</a></li>
+<li class="chapter" data-level="4.4" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#exercise-4"><i class="fa fa-check"></i><b>4.4</b> Exercise</a></li>
+<li class="chapter" data-level="4.5" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#solution-4"><i class="fa fa-check"></i><b>4.5</b> Solution</a></li>
+<li class="chapter" data-level="4.6" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#command-history"><i class="fa fa-check"></i><b>4.6</b> Command History</a></li>
+<li class="chapter" data-level="4.7" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#exercise-5"><i class="fa fa-check"></i><b>4.7</b> Exercise</a></li>
+<li class="chapter" data-level="4.8" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#solution-5"><i class="fa fa-check"></i><b>4.8</b> Solution</a></li>
+<li class="chapter" data-level="4.9" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#exercise-6"><i class="fa fa-check"></i><b>4.9</b> Exercise</a></li>
+<li class="chapter" data-level="4.10" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#solution-6"><i class="fa fa-check"></i><b>4.10</b> Solution</a></li>
+<li class="chapter" data-level="4.11" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#details-on-the-fastq-format"><i class="fa fa-check"></i><b>4.11</b> Details on the FASTQ format</a></li>
+<li class="chapter" data-level="4.12" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#exercise-7"><i class="fa fa-check"></i><b>4.12</b> Exercise</a></li>
+<li class="chapter" data-level="4.13" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#solution-7"><i class="fa fa-check"></i><b>4.13</b> Solution</a></li>
+<li class="chapter" data-level="4.14" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#creating-moving-copying-and-removing"><i class="fa fa-check"></i><b>4.14</b> Creating, moving, copying, and removing</a>
+<ul>
+<li class="chapter" data-level="4.14.1" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#copying-files"><i class="fa fa-check"></i><b>4.14.1</b> Copying Files</a></li>
+<li class="chapter" data-level="4.14.2" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#creating-directories"><i class="fa fa-check"></i><b>4.14.2</b> Creating Directories</a></li>
+<li class="chapter" data-level="4.14.3" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#moving-renaming"><i class="fa fa-check"></i><b>4.14.3</b> Moving / Renaming</a></li>
+<li class="chapter" data-level="4.14.4" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#file-permissions"><i class="fa fa-check"></i><b>4.14.4</b> File Permissions</a></li>
+<li class="chapter" data-level="4.14.5" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#removing"><i class="fa fa-check"></i><b>4.14.5</b> Removing</a></li>
+</ul></li>
+<li class="chapter" data-level="4.15" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#exercise-8"><i class="fa fa-check"></i><b>4.15</b> Exercise</a></li>
+<li class="chapter" data-level="4.16" data-path="working-with-files-and-directories.html"><a href="working-with-files-and-directories.html#solution-8"><i class="fa fa-check"></i><b>4.16</b> Solution</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="redirection.html"><a href="redirection.html"><i class="fa fa-check"></i><b>5</b> Redirection</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="redirection.html"><a href="redirection.html#searching-files"><i class="fa fa-check"></i><b>5.1</b> Searching files</a></li>
+<li class="chapter" data-level="5.2" data-path="redirection.html"><a href="redirection.html#nucleotide-abbreviations"><i class="fa fa-check"></i><b>5.2</b> Nucleotide abbreviations</a></li>
+<li class="chapter" data-level="5.3" data-path="redirection.html"><a href="redirection.html#determining-quality"><i class="fa fa-check"></i><b>5.3</b> Determining quality</a></li>
+<li class="chapter" data-level="5.4" data-path="redirection.html"><a href="redirection.html#exercise-9"><i class="fa fa-check"></i><b>5.4</b> Exercise</a></li>
+<li class="chapter" data-level="5.5" data-path="redirection.html"><a href="redirection.html#solution-9"><i class="fa fa-check"></i><b>5.5</b> Solution</a></li>
+<li class="chapter" data-level="5.6" data-path="redirection.html"><a href="redirection.html#redirecting-output"><i class="fa fa-check"></i><b>5.6</b> Redirecting output</a></li>
+<li class="chapter" data-level="5.7" data-path="redirection.html"><a href="redirection.html#file-extensions"><i class="fa fa-check"></i><b>5.7</b> File extensions</a></li>
+<li class="chapter" data-level="5.8" data-path="redirection.html"><a href="redirection.html#exercise-10"><i class="fa fa-check"></i><b>5.8</b> Exercise</a></li>
+<li class="chapter" data-level="5.9" data-path="redirection.html"><a href="redirection.html#solution-10"><i class="fa fa-check"></i><b>5.9</b> Solution</a></li>
+<li class="chapter" data-level="5.10" data-path="redirection.html"><a href="redirection.html#exercise-11"><i class="fa fa-check"></i><b>5.10</b> Exercise</a></li>
+<li class="chapter" data-level="5.11" data-path="redirection.html"><a href="redirection.html#solution-11"><i class="fa fa-check"></i><b>5.11</b> Solution</a></li>
+<li class="chapter" data-level="5.12" data-path="redirection.html"><a href="redirection.html#file-extensions---part-2"><i class="fa fa-check"></i><b>5.12</b> File extensions - part 2</a></li>
+<li class="chapter" data-level="5.13" data-path="redirection.html"><a href="redirection.html#custom-grep-control"><i class="fa fa-check"></i><b>5.13</b> Custom <code>grep</code> control</a></li>
+<li class="chapter" data-level="5.14" data-path="redirection.html"><a href="redirection.html#file-manipulation-and-more-practices-with-pipes"><i class="fa fa-check"></i><b>5.14</b> File manipulation and more practices with pipes</a></li>
+<li class="chapter" data-level="5.15" data-path="redirection.html"><a href="redirection.html#writing-for-loops"><i class="fa fa-check"></i><b>5.15</b> Writing for loops</a></li>
+<li class="chapter" data-level="5.16" data-path="redirection.html"><a href="redirection.html#using-basename-in-for-loops"><i class="fa fa-check"></i><b>5.16</b> Using Basename in for loops</a></li>
+<li class="chapter" data-level="5.17" data-path="redirection.html"><a href="redirection.html#exercise-12"><i class="fa fa-check"></i><b>5.17</b> Exercise</a></li>
+<li class="chapter" data-level="5.18" data-path="redirection.html"><a href="redirection.html#solution-12"><i class="fa fa-check"></i><b>5.18</b> Solution</a></li>
+<li class="chapter" data-level="5.19" data-path="redirection.html"><a href="redirection.html#exercise-13"><i class="fa fa-check"></i><b>5.19</b> Exercise</a></li>
+<li class="chapter" data-level="5.20" data-path="redirection.html"><a href="redirection.html#solution-13"><i class="fa fa-check"></i><b>5.20</b> Solution</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html"><i class="fa fa-check"></i><b>6</b> Writing Scripts and Working with Data</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#writing-files"><i class="fa fa-check"></i><b>6.1</b> Writing files</a></li>
+<li class="chapter" data-level="6.2" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#which-editor"><i class="fa fa-check"></i><b>6.2</b> Which Editor?</a></li>
+<li class="chapter" data-level="6.3" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#control-ctrl-or-key"><i class="fa fa-check"></i><b>6.3</b> Control, Ctrl, or ^ Key</a></li>
+<li class="chapter" data-level="6.4" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#exercise-14"><i class="fa fa-check"></i><b>6.4</b> Exercise</a></li>
+<li class="chapter" data-level="6.5" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#solution-14"><i class="fa fa-check"></i><b>6.5</b> Solution</a></li>
+<li class="chapter" data-level="6.6" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#writing-scripts"><i class="fa fa-check"></i><b>6.6</b> Writing scripts</a></li>
+<li class="chapter" data-level="6.7" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#custom-grep-control-1"><i class="fa fa-check"></i><b>6.7</b> Custom <code>grep</code> control</a></li>
+<li class="chapter" data-level="6.8" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#exercise-15"><i class="fa fa-check"></i><b>6.8</b> Exercise</a></li>
+<li class="chapter" data-level="6.9" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#solution-15"><i class="fa fa-check"></i><b>6.9</b> Solution</a></li>
+<li class="chapter" data-level="6.10" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#making-the-script-into-a-program"><i class="fa fa-check"></i><b>6.10</b> Making the script into a program</a></li>
+<li class="chapter" data-level="6.11" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#moving-and-downloading-data"><i class="fa fa-check"></i><b>6.11</b> Moving and Downloading Data</a>
+<ul>
+<li class="chapter" data-level="6.11.1" data-path="writing-scripts-and-working-with-data.html"><a href="writing-scripts-and-working-with-data.html#getting-data-from-the-cloud"><i class="fa fa-check"></i><b>6.11.1</b> Getting data from the cloud</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="project-organization.html"><a href="project-organization.html"><i class="fa fa-check"></i><b>7</b> Project Organization</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="project-organization.html"><a href="project-organization.html#tip-1"><i class="fa fa-check"></i><b>7.1</b> Tip</a></li>
+<li class="chapter" data-level="7.2" data-path="project-organization.html"><a href="project-organization.html#exercise-16"><i class="fa fa-check"></i><b>7.2</b> Exercise</a></li>
+<li class="chapter" data-level="7.3" data-path="project-organization.html"><a href="project-organization.html#solution-16"><i class="fa fa-check"></i><b>7.3</b> Solution</a></li>
+<li class="chapter" data-level="7.4" data-path="project-organization.html"><a href="project-organization.html#organizing-your-files"><i class="fa fa-check"></i><b>7.4</b> Organizing your files</a></li>
+<li class="chapter" data-level="7.5" data-path="project-organization.html"><a href="project-organization.html#documenting-your-activity-on-the-project"><i class="fa fa-check"></i><b>7.5</b> Documenting your activity on the project</a></li>
+<li class="chapter" data-level="7.6" data-path="project-organization.html"><a href="project-organization.html#exercise-17"><i class="fa fa-check"></i><b>7.6</b> Exercise</a></li>
+<li class="chapter" data-level="7.7" data-path="project-organization.html"><a href="project-organization.html#solution-17"><i class="fa fa-check"></i><b>7.7</b> Solution</a></li>
+<li class="chapter" data-level="7.8" data-path="project-organization.html"><a href="project-organization.html#navigating-in-nano"><i class="fa fa-check"></i><b>7.8</b> Navigating in Nano</a></li>
+<li class="chapter" data-level="7.9" data-path="project-organization.html"><a href="project-organization.html#references"><i class="fa fa-check"></i><b>7.9</b> References</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to the Command Line for Genomics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="working-with-files-and-directories" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Working with Files and Directories<a href="working-with-files-and-directories.html#working-with-files-and-directories" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="working-with-files" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Working with Files<a href="working-with-files-and-directories.html#working-with-files" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="our-data-set-fastq-files" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Our data set: FASTQ files<a href="working-with-files-and-directories.html#our-data-set-fastq-files" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Now that we know how to navigate around our directory structure, let’s
+start working with our sequencing files. We did a sequencing experiment and
+have two results files, which are stored in our <code>untrimmed_fastq</code> directory.</p>
+</div>
+<div id="wildcards" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Wildcards<a href="working-with-files-and-directories.html#wildcards" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Navigate to your <code>untrimmed_fastq</code> directory:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="working-with-files-and-directories.html#cb35-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-2"><a href="working-with-files-and-directories.html#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span></code></pre></div>
+<p>We are interested in looking at the FASTQ files in this directory. We can list
+all files with the .fastq extension using the command:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="working-with-files-and-directories.html#cb36-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-2"><a href="working-with-files-and-directories.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb36-3"><a href="working-with-files-and-directories.html#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">*</span>.fastq</span></code></pre></div>
+<pre><code>## SRR097977.fastq
+## SRR098026.fastq</code></pre>
+<p>The <code>*</code> character is a special type of character called a wildcard, which can be used to represent any number of any type of character.
+Thus, <code>*.fastq</code> matches every file that ends with <code>.fastq</code>.</p>
+<p>This command:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb38-1"><a href="working-with-files-and-directories.html#cb38-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-2"><a href="working-with-files-and-directories.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb38-3"><a href="working-with-files-and-directories.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">*</span>977.fastq </span></code></pre></div>
+<pre><code>## SRR097977.fastq</code></pre>
+<p>lists only the file that ends with <code>977.fastq</code>.</p>
+<p>This command:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a href="working-with-files-and-directories.html#cb40-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-2"><a href="working-with-files-and-directories.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /usr/bin/<span class="pp">*</span>.sh</span></code></pre></div>
+<pre><code>## /usr/bin/power_report.sh</code></pre>
+<p>Lists every file in <code>/usr/bin</code> that ends in the characters <code>.sh</code>.
+Note that the output displays <strong>full</strong> paths to files, since
+each result starts with <code>/</code>.</p>
+</div>
+</div>
+<div id="exercise-3" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Exercise<a href="working-with-files-and-directories.html#exercise-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Do each of the following tasks from your current directory using a single
+<code>ls</code> command for each:</p>
+<ol style="list-style-type: decimal">
+<li>List all of the files in <code>/usr/bin</code> that start with the letter ‘c’.</li>
+<li>List all of the files in <code>/usr/bin</code> that contain the letter ‘a’.</li>
+<li>List all of the files in <code>/usr/bin</code> that end with the letter ‘o’.</li>
+</ol>
+<p>Bonus: List all of the files in <code>/usr/bin</code> that contain the letter ‘a’ or the
+letter ‘c’.</p>
+<p>Hint: The bonus question requires a Unix wildcard that we haven’t talked about
+yet. Try searching the internet for information about Unix wildcards to find
+what you need to solve the bonus problem.</p>
+</div>
+<div id="solution-3" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Solution<a href="working-with-files-and-directories.html#solution-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="exercise-4" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Exercise<a href="working-with-files-and-directories.html#exercise-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>echo</code> is a built-in shell command that writes its arguments, like a line of text to standard output.
+The <code>echo</code> command can also be used with pattern matching characters, such as wildcard characters.
+Here we will use the <code>echo</code> command to see how the wildcard character is interpreted by the shell.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb42-1"><a href="working-with-files-and-directories.html#cb42-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-2"><a href="working-with-files-and-directories.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb42-3"><a href="working-with-files-and-directories.html#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="pp">*</span>.fastq</span></code></pre></div>
+<pre><code>## SRR097977.fastq SRR098026.fastq</code></pre>
+<p>The <code>*</code> is expanded to include any file that ends with <code>.fastq</code>. We can see that the output of
+<code>echo *.fastq</code> is the same as that of <code>ls *.fastq</code>.</p>
+<p>What would the output look like if the wildcard could <em>not</em> be matched? Compare the outputs of
+<code>echo *.missing</code> and <code>ls *.missing</code>.</p>
+</div>
+<div id="solution-4" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Solution<a href="working-with-files-and-directories.html#solution-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="command-history" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> Command History<a href="working-with-files-and-directories.html#command-history" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you want to repeat a command that you’ve run recently, you can access previous
+commands using the up arrow on your keyboard to go back to the most recent
+command. Likewise, the down arrow takes you forward in the command history.</p>
+<p>A few more useful shortcuts:</p>
+<ul>
+<li>&lt;kbdCtrl&lt;/kbd+&lt;kbdC&lt;/kbdwill cancel the command you are writing, and give you a
+fresh prompt.</li>
+<li>&lt;kbdCtrl&lt;/kbd+&lt;kbdR&lt;/kbdwill do a reverse-search through your command history. This
+is very useful.</li>
+<li>&lt;kbdCtrl&lt;/kbd+&lt;kbdL&lt;/kbdor the <code>clear</code> command will clear your screen.</li>
+</ul>
+<p>You can also review your recent commands with the <code>history</code> command, by entering:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="working-with-files-and-directories.html#cb44-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-2"><a href="working-with-files-and-directories.html#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">history</span></span></code></pre></div>
+<p>to see a numbered list of recent commands. You can reuse one of these commands
+directly by referring to the number of that command.</p>
+<p>For example, if your history looked like this:</p>
+<p>259 ls <em>
+260 ls /usr/bin/</em>.sh
+261 ls <em>R1</em>fastq</p>
+<p>then you could repeat command #260 by entering:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a href="working-with-files-and-directories.html#cb45-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-2"><a href="working-with-files-and-directories.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="ex">!260</span></span></code></pre></div>
+<p>Type <code>!</code> (exclamation point) and then the number of the command from your history.
+You will be glad you learned this when you need to re-run very complicated commands.
+For more information on advanced usage of <code>history</code>, read section 9.3 of
+<a href="https://www.gnu.org/software/bash/manual/html_node/index.html">Bash manual</a>.</p>
+</div>
+<div id="exercise-5" class="section level2 hasAnchor" number="4.7">
+<h2><span class="header-section-number">4.7</span> Exercise<a href="working-with-files-and-directories.html#exercise-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Find the line number in your history for the command that listed all the .sh
+files in <code>/usr/bin</code>. Rerun that command.</p>
+</div>
+<div id="solution-5" class="section level2 hasAnchor" number="4.8">
+<h2><span class="header-section-number">4.8</span> Solution<a href="working-with-files-and-directories.html#solution-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Examining Files</p>
+<p>We now know how to switch directories, run programs, and look at the
+contents of directories, but how do we look at the contents of files?</p>
+<p>One way to examine a file is to print out all of the
+contents using the program <code>cat</code>.</p>
+<p>Enter the following command from within the <code>untrimmed_fastq</code> directory:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb46-1"><a href="working-with-files-and-directories.html#cb46-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-2"><a href="working-with-files-and-directories.html#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb46-3"><a href="working-with-files-and-directories.html#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> SRR098026.fastq </span></code></pre></div>
+<p>This will print out all of the contents of the <code>SRR098026.fastq</code> to the screen.</p>
+<p><code>cat</code> is a terrific program, but when the file is really big, it can
+be annoying to use. The program, <code>less</code>, is useful for this
+case. <code>less</code> opens the file as read only, and lets you navigate through it. The navigation commands
+are identical to the <code>man</code> program.</p>
+<p>Enter the following command:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb47-1"><a href="working-with-files-and-directories.html#cb47-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-2"><a href="working-with-files-and-directories.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb47-3"><a href="working-with-files-and-directories.html#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> SRR097977.fastq</span>
+<span id="cb47-4"><a href="working-with-files-and-directories.html#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="working-with-files-and-directories.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="ex">q</span></span></code></pre></div>
+<p>Some navigation commands in <code>less</code>:</p>
+<table>
+<thead>
+<tr class="header">
+<th>key</th>
+<th>action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><kbd>Space</kbd></td>
+<td>to go forward</td>
+</tr>
+<tr class="even">
+<td><kbd>b</kbd></td>
+<td>to go backward</td>
+</tr>
+<tr class="odd">
+<td><kbd>g</kbd></td>
+<td>to go to the beginning</td>
+</tr>
+<tr class="even">
+<td><kbd>G</kbd></td>
+<td>to go to the end</td>
+</tr>
+<tr class="odd">
+<td><kbd>q</kbd></td>
+<td>to quit</td>
+</tr>
+</tbody>
+</table>
+<p><code>less</code> also gives you a way of searching through files. Use the
+“/” key to begin a search. Enter the word you would like
+to search for and press <code>enter</code>. The screen will jump to the next location where
+that word is found.</p>
+<p><strong>Shortcut:</strong></p>
+<p>If you hit “/” then “enter”, <code>less</code> will repeat
+the previous search. <code>less</code> searches from the current location and
+works its way forward. Scroll up a couple lines on your terminal to verify
+you are at the beginning of the file. Note, if you are at the end of the file and search
+for the sequence “CAA”, <code>less</code> will not find it. You either need to go to the
+beginning of the file (by typing <code>g</code>) and search again using <code>/</code> or you
+can use <code>?</code> to search backwards in the same way you used <code>/</code> previously.</p>
+<p>For instance, let’s search forward for the sequence <code>TTTTT</code> in our file.
+You can see that we go right to that sequence, what it looks like,
+and where it is in the file. If you continue to type <code>/</code> and hit return, you will move
+forward to the next instance of this sequence motif. If you instead type <code>?</code> and hit
+return, you will search backwards and move up the file to previous examples of this motif.</p>
+</div>
+<div id="exercise-6" class="section level2 hasAnchor" number="4.9">
+<h2><span class="header-section-number">4.9</span> Exercise<a href="working-with-files-and-directories.html#exercise-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>What are the next three nucleotides (characters) after the first instance of the sequence quoted above?</p>
+</div>
+<div id="solution-6" class="section level2 hasAnchor" number="4.10">
+<h2><span class="header-section-number">4.10</span> Solution<a href="working-with-files-and-directories.html#solution-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Remember, the <code>man</code> program actually uses <code>less</code> internally and
+therefore uses the same commands, so you can search documentation
+using “/” as well!</p>
+<p>There’s another way that we can look at files, and in this case, just
+look at part of them. This can be particularly useful if we just want
+to see the beginning or end of the file, or see how it’s formatted.</p>
+<p>The commands are <code>head</code> and <code>tail</code> and they let you look at
+the beginning and end of a file, respectively.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb48-1"><a href="working-with-files-and-directories.html#cb48-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-2"><a href="working-with-files-and-directories.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb48-3"><a href="working-with-files-and-directories.html#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 4 SRR098026.fastq </span></code></pre></div>
+<pre><code>## @SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
+## NNNNNNNNNNNNNNNNCNNNNNNNNNNNNNNNNNN
+## +SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
+## !!!!!!!!!!!!!!!!#!!!!!!!!!!!!!!!!!!</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb50-1"><a href="working-with-files-and-directories.html#cb50-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-2"><a href="working-with-files-and-directories.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb50-3"><a href="working-with-files-and-directories.html#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> 1 SRR098026.fastq </span></code></pre></div>
+<pre><code>## A!@B!BBB@ABAB#########!!!!!!!######</code></pre>
+<p>The <code>-n</code> option to either of these commands can be used to print the
+first or last <code>n</code> lines of a file.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb52-1"><a href="working-with-files-and-directories.html#cb52-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-2"><a href="working-with-files-and-directories.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb52-3"><a href="working-with-files-and-directories.html#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 1 SRR098026.fastq </span></code></pre></div>
+<pre><code>## @SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb54-1"><a href="working-with-files-and-directories.html#cb54-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-2"><a href="working-with-files-and-directories.html#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb54-3"><a href="working-with-files-and-directories.html#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> 1 SRR098026.fastq </span></code></pre></div>
+<pre><code>## A!@B!BBB@ABAB#########!!!!!!!######</code></pre>
+</div>
+<div id="details-on-the-fastq-format" class="section level2 hasAnchor" number="4.11">
+<h2><span class="header-section-number">4.11</span> Details on the FASTQ format<a href="working-with-files-and-directories.html#details-on-the-fastq-format" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Although it looks complicated (and it is), it’s easy to understand the
+<a href="https://en.wikipedia.org/wiki/FASTQ_format">fastq</a> format with a little decoding. Some rules about the format
+include…</p>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="73%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Line</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Always begins with ‘@’ and then information about the read</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>The actual DNA sequence</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Always begins with a ‘+’ and sometimes the same info in line 1</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Has a string of characters which represent the quality scores; must have same number of characters as line 2</td>
+</tr>
+</tbody>
+</table>
+<p>We can view the first complete read in one of the files in our dataset by using <code>head</code> to look at
+the first four lines.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb56-1"><a href="working-with-files-and-directories.html#cb56-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-2"><a href="working-with-files-and-directories.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb56-3"><a href="working-with-files-and-directories.html#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 4 SRR098026.fastq </span></code></pre></div>
+<pre><code>## @SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
+## NNNNNNNNNNNNNNNNCNNNNNNNNNNNNNNNNNN
+## +SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
+## !!!!!!!!!!!!!!!!#!!!!!!!!!!!!!!!!!!</code></pre>
+<p>Line 4 shows the quality for each nucleotide in the read. Quality is interpreted as the
+probability of an incorrect base call (e.g. 1 in 10) or, equivalently, the base call
+accuracy (e.g. 90%). To make it possible to line up each individual nucleotide with its quality
+score, the numerical score is converted into a code where each individual character
+represents the numerical quality score for an individual nucleotide.</p>
+<p>The <code>#</code> character and each of the <code>!</code> characters represent the encoded quality for an
+individual nucleotide. The numerical value assigned to each of these characters depends on the
+sequencing platform that generated the reads. The sequencing machine used to generate our data
+uses the standard Sanger quality PHRED score encoding, Illumina version 1.8 onwards.
+Each character is assigned a quality score between 0 and 42 as shown in the chart below.</p>
+<p>Quality encoding: !“#$%&amp;’()*+,-./0123456789:;&lt;=?<span class="citation">@ABCDEFGHIJK</span>
+| | | | |
+Quality score: 0……..10……..20……..30……..40..</p>
+<p>Each quality score represents the probability that the corresponding nucleotide call is
+incorrect. This quality score is logarithmically based, so a quality score of 10 reflects a
+base call accuracy of 90%, but a quality score of 20 reflects a base call accuracy of 99%.
+These probability values are the results from the base calling algorithm and dependent on how
+much signal was captured for the base incorporation.</p>
+</div>
+<div id="exercise-7" class="section level2 hasAnchor" number="4.12">
+<h2><span class="header-section-number">4.12</span> Exercise<a href="working-with-files-and-directories.html#exercise-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>What is the last line of the <code>~/shell_data/untrimmed_fastq/SRR098026.fastq</code> file?</li>
+<li>From your home directory, and without changing directories,
+use one short command to print the contents of all of the files in
+the <code>~/shell_data/untrimmed_fastq</code> directory into one file.</li>
+</ol>
+</div>
+<div id="solution-7" class="section level2 hasAnchor" number="4.13">
+<h2><span class="header-section-number">4.13</span> Solution<a href="working-with-files-and-directories.html#solution-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="creating-moving-copying-and-removing" class="section level2 hasAnchor" number="4.14">
+<h2><span class="header-section-number">4.14</span> Creating, moving, copying, and removing<a href="working-with-files-and-directories.html#creating-moving-copying-and-removing" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now we can move around in the file structure, look at files, and search files. But what if we want to copy files or move
+them around or get rid of them? Most of the time, you can do these sorts of file manipulations without the command line,
+but there will be some cases where it will be
+impossible. You’ll also find that you may be working with hundreds of files and want to do similar manipulations to all
+of those files. In cases like this, it’s much faster to do these operations at the command line.</p>
+<div id="copying-files" class="section level3 hasAnchor" number="4.14.1">
+<h3><span class="header-section-number">4.14.1</span> Copying Files<a href="working-with-files-and-directories.html#copying-files" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When working with computational data, it’s important to keep a safe copy of that data that can’t be accidentally overwritten or deleted.
+For this lesson, our raw data is our FASTQ files. We don’t want to accidentally change the original files, so we’ll make a copy of them
+and change the file permissions so that we can read from, but not write to, the files.</p>
+<p>First, let’s make a copy of one of our FASTQ files using the <code>cp</code> command.</p>
+<p>Navigate to the <code>shell_data/untrimmed_fastq</code> directory and enter:</p>
+<p>cp SRR098026.fastq SRR098026-copy.fastq .fastq</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb58-1"><a href="working-with-files-and-directories.html#cb58-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-2"><a href="working-with-files-and-directories.html#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb58-3"><a href="working-with-files-and-directories.html#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> SRR098026.fastq  SRR098026-copy.fastq</span></code></pre></div>
+<p>We now have two copies of the <code>SRR098026.fastq</code> file, one of them named <code>SRR098026-copy.fastq .fastq</code>. We’ll move this file to a new directory
+called <code>backup</code> where we’ll store our backup data files.</p>
+</div>
+<div id="creating-directories" class="section level3 hasAnchor" number="4.14.2">
+<h3><span class="header-section-number">4.14.2</span> Creating Directories<a href="working-with-files-and-directories.html#creating-directories" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>mkdir</code> command is used to make a directory. Enter <code>mkdir</code>
+followed by a space, then the directory name you want to create:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb59-1"><a href="working-with-files-and-directories.html#cb59-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-2"><a href="working-with-files-and-directories.html#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fast</span>
+<span id="cb59-3"><a href="working-with-files-and-directories.html#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> backup</span></code></pre></div>
+</div>
+<div id="moving-renaming" class="section level3 hasAnchor" number="4.14.3">
+<h3><span class="header-section-number">4.14.3</span> Moving / Renaming<a href="working-with-files-and-directories.html#moving-renaming" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can now move our backup file to this directory. We can
+move files around using the command <code>mv</code>:</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb60-1"><a href="working-with-files-and-directories.html#cb60-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-2"><a href="working-with-files-and-directories.html#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb60-3"><a href="working-with-files-and-directories.html#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> SRR098026.fastq  SRR098026-copy.fastq</span>
+<span id="cb60-4"><a href="working-with-files-and-directories.html#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> backup</span>
+<span id="cb60-5"><a href="working-with-files-and-directories.html#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> SRR098026-copy.fastq backup</span>
+<span id="cb60-6"><a href="working-with-files-and-directories.html#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> backup</span></code></pre></div>
+<pre><code>## SRR098026-copy.fastq</code></pre>
+<p>The <code>mv</code> command is also how you rename files. Let’s rename this file to make it clear that this is a backup:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb62-1"><a href="working-with-files-and-directories.html#cb62-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-2"><a href="working-with-files-and-directories.html#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq/backup</span>
+<span id="cb62-3"><a href="working-with-files-and-directories.html#cb62-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-4"><a href="working-with-files-and-directories.html#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> SRR098026-copy.fastq SRR098026-backup.fastq </span>
+<span id="cb62-5"><a href="working-with-files-and-directories.html#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code></pre></div>
+<pre><code>## SRR098026-backup.fastq</code></pre>
+</div>
+<div id="file-permissions" class="section level3 hasAnchor" number="4.14.4">
+<h3><span class="header-section-number">4.14.4</span> File Permissions<a href="working-with-files-and-directories.html#file-permissions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We’ve now made a backup copy of our file, but just because we have two copies, it doesn’t make us safe. We can still accidentally delete or
+overwrite both copies. To make sure we can’t accidentally mess up this backup file, we’re going to change the permissions on the file so
+that we’re only allowed to read (i.e. view) the file, not write to it (i.e. make new changes).</p>
+<p>View the current permissions on a file using the <code>-l</code> (long) flag for the <code>ls</code> command:</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb64-1"><a href="working-with-files-and-directories.html#cb64-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-2"><a href="working-with-files-and-directories.html#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq</span>
+<span id="cb64-3"><a href="working-with-files-and-directories.html#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div>
+<pre><code>## total 18128
+## -rw-r--r--@ 1 ggiaever  staff    47552 Nov 15  2017 SRR097977.fastq
+## -rw-r--r--@ 1 ggiaever  staff    43332 Nov 15  2017 SRR098026.fastq
+## drwxr-xr-x  3 ggiaever  staff       96 Oct 23 23:39 backup
+## -rw-r--r--  1 ggiaever  staff       76 Oct 23 22:50 bad-reads-script.sh
+## -rw-r--r--  1 ggiaever  staff    23214 Oct 23 23:22 bad_reads_2022.txt
+## -rw-r--r--  1 ggiaever  staff    23214 Oct 23 22:51 scripted_bad_reads_2022.txt
+## -rw-r--r--  1 ggiaever  staff       85 Oct 23 23:22 seq_info_2022.txt
+## -rw-r--r--  1 ggiaever  staff  8352381 Oct 23 23:01 species_EnsemblBacteria_2022.txt</code></pre>
+<p>The first part of the output for the <code>-l</code> flag gives you information about the file’s current permissions. There are ten slots in the
+permissions list. The first character in this list is related to file type, not permissions, so we’ll ignore it for now. The next three
+characters relate to the permissions that the file owner has, the next three relate to the permissions for group members, and the final
+three characters specify what other users outside of your group can do with the file. We’re going to concentrate on the three positions
+that deal with your permissions (as the file owner).</p>
+<div class="figure">
+<img src="fig/rwx_figure.svg" alt="" />
+<p class="caption">Permissions breakdown</p>
+</div>
+<p>Here the three positions that relate to the file owner are <code>rw-</code>. The <code>r</code> means that you have permission to read the file, the <code>w</code>
+indicates that you have permission to write to (i.e. make changes to) the file, and the third position is a <code>-</code>, indicating that you
+don’t have permission to carry out the ability encoded by that space (this is the space where <code>x</code> or executable ability is stored, we’ll
+talk more about this in <a href="http://www.datacarpentry.org/shell-genomics/05-writing-scripts/">a later lesson</a>).</p>
+<p>Our goal for now is to change permissions on this file so that you no longer have <code>w</code> or write permissions. We can do this using the <code>chmod</code> (change mode) command and subtracting (<code>-</code>) the write permission <code>-w</code>.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb66-1"><a href="working-with-files-and-directories.html#cb66-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-2"><a href="working-with-files-and-directories.html#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq/backup</span>
+<span id="cb66-3"><a href="working-with-files-and-directories.html#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-w</span> SRR098026-backup.fastq </span>
+<span id="cb66-4"><a href="working-with-files-and-directories.html#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> </span></code></pre></div>
+<pre><code>## total 88
+## -r--r--r--@ 1 ggiaever  staff  43332 Oct 23 23:39 SRR098026-backup.fastq</code></pre>
+</div>
+<div id="removing" class="section level3 hasAnchor" number="4.14.5">
+<h3><span class="header-section-number">4.14.5</span> Removing<a href="working-with-files-and-directories.html#removing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To prove to ourselves that you no longer have the ability to modify this file, try deleting it with the <code>rm</code> command:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb68-1"><a href="working-with-files-and-directories.html#cb68-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-2"><a href="working-with-files-and-directories.html#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq/backup</span>
+<span id="cb68-3"><a href="working-with-files-and-directories.html#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> SRR098026-backup.fastq </span></code></pre></div>
+<p>You’ll be asked if you want to override your file permissions, or it just won’t remove the file.</p>
+<p>If it does ask, you should enter <code>n</code> for no. If you enter <code>n</code> (for no), the file will not be deleted. If you enter <code>y</code>, you will delete the file. This gives us an extra
+measure of security, as there is one more step between us and deleting our data files.</p>
+<p><strong>Important</strong>: The <code>rm</code> command permanently removes the file. Be careful with this command. It doesn’t
+just nicely put the files in the Trash. They’re really gone.</p>
+<p>By default, <code>rm</code> will not delete directories. You can tell <code>rm</code> to
+delete a directory using the <code>-r</code> (recursive) option. Let’s delete the backup directory
+we just made.</p>
+<p>Enter the following command:</p>
+<p>The -r tells it to remove the directory…</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb69-1"><a href="working-with-files-and-directories.html#cb69-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-2"><a href="working-with-files-and-directories.html#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/shell_data/untrimmed_fastq/</span>
+<span id="cb69-3"><a href="working-with-files-and-directories.html#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> backup</span></code></pre></div>
+<p>Now you’ll be asked if you want to override your file permissions for backup/SRR098026-backup.fastq</p>
+<p>This will delete not only the directory, but all files within the directory. If you have write-protected files in the directory,
+you will be asked whether you want to override your permission settings.</p>
+<p>I’m going to say yes because you’re going to regenerate it in the next exercise!</p>
+</div>
+</div>
+<div id="exercise-8" class="section level2 hasAnchor" number="4.15">
+<h2><span class="header-section-number">4.15</span> Exercise<a href="working-with-files-and-directories.html#exercise-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Starting in the <code>shell_data/untrimmed_fastq/</code> directory, do the following:
+1. Make sure that you have deleted your backup directory and all files it contains.<br />
+2. Create a backup of SRR098026.fastq and SRR097977.fastq using <code>cp</code>. (Note: You’ll need to do this individually for each of the two FASTQ files. We haven’t
+learned yet how to do this
+with a wildcard.)<br />
+3. Use a wildcard to move all of your backup files to a new backup directory.<br />
+4. Change the permissions on all of your backup files to be write-protected.</p>
+</div>
+<div id="solution-8" class="section level2 hasAnchor" number="4.16">
+<h2><span class="header-section-number">4.16</span> Solution<a href="working-with-files-and-directories.html#solution-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="navigating-files-and-directories.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="redirection.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-working-with-files.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["shell-genomics.pdf", "shell-genomics.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

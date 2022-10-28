@@ -1,0 +1,7 @@
+book_filename: omic_sciences
+new_session: yes
+rmd_files: ["index.Rmd","software.Rmd","bamfiles.Rmd", "reads2counts.Rmd",
+ "ExploratoryAnalysis.Rmd"]
+delete_merged_file: true
+
+

@@ -1,0 +1,186 @@
+
+ - **Historical contingency** Mutations responsible for the appearance of rudimentary citrate utilization and for refining this ability have been characterized. However, the complete nature of the genetic and/or ecological events that set the stage for this key innovation is unknown. In particular, it is unclear why it took so long for citrate utilization to evolve and why it evolved in only one of the twelve E. coli populations after 30 years of the Lenski experiment. The long-delayed and unique evolution of this function might indicate the involvement of some extremely rare mutation. Alternately, it may involve an ordinary mutation, but one whose physical occurrence or phenotypic expression is contingent on prior mutations in that population. The role of historical contingency in this evolution, meaning the outcome was sensitive to seemingly inconsequential events that fundamentally changed the future, has been much debated. One reason that evolution might be meaningfully contingent, even with the deterministic force of natural selection, is the extraordinarily complex relationship of genotype to fitness.
+ 
+ It was discovered that potentiating mutations were necessary for the emergence of Cit+ mutations
+ 
+ historical contingency in evolution, meaning the outcomeis sensitive to seemingly inconsequential events that fundamentally changed the future, has been much debated. One reason that evolution might be meaningfully contingent, even with the deterministic force of natural selection, is the extraordinarily complex relationship of genotype to fitness.
+ 
+ what historical contingency means in the context of evolution is that the evolution is dependent on some seeming inconseqential event that fundamentally changed the future and it has been much debated.
+ 
+ unpredicatble
+ 
+  Why do we need an index? Genomes can be very large. A genome index allows the aligner to rapidly look up candidate alignment locations for each read rather than conduct an exhaustive search each time. 
+  
+  
+# First - create a tiny shell script to run vcfutils, accepting a single parameter:
+ 
+echo "#\!/bin/bash" > tiny.sh
+echo "echo \"Sweeping with vcfutils.pl, min read depth of: \$1\" " >> tiny.sh
+echo "$TACC_SAMTOOLS_DIR/bcftools/vcfutils.pl varFilter -Q 20 -d \$1 hs37d5_allseqs_bwa.raw.vcf | grep -v '^#' | wc -l " >> tiny.sh
+echo "vcfutils.pl varFilter -Q 20 -d \$1 results/vcf/SRR2584866_variants.vcf | grep -v '^#' | wc -l " >> tiny.sh
+# Now make it executable
+ 
+chmod +x tiny.sh
+ 
+# Use xargs to do a sweep of read depths
+ 
+echo 2 3 4 5 6 7 | xargs -n 1 tiny.sh
+## Explore the VCF format:
+# First - create a tiny shell script to run vcfutils, accepting a single parameter:
+ 
+echo "#\!/bin/bash" > tiny.sh
+echo "echo \"Sweeping with vcfutils.pl, min read depth of: \$1\" " >> tiny.sh
+echo "$/Users/ggiaever/miniconda3-intel/envs/variant/bin/vcfutils.pl varFilter -Q 20 -d \$1 results/bcf/SRR2584866_raw.bcf | grep -v '^#' | wc -l " >> tiny.sh
+ 
+# Now make it executable
+ 
+chmod +x tiny.sh
+ 
+# Use xargs to do a sweep of read depths
+ 
+echo 2 3 4 5 6 7 | xargs -n 1 tiny.sh
+ 
+ 
+Let's look at how much trimming occured on our SRR2584863_1.trim.fastq.gz
+SRR2584863_2.trim.fastq.gz files. 472M and 427M, smalller than their
+original sizes of . Remember SRR2584863_2.trim.fastq.gz 
+failed per base sequence quality test. That would predict that the read
+lengths of SRR2584863_2.trim.fastq.gz would be shorter than SRR2584863_2.trim.fastq.gz.
+Can you think of a way to compare the read lengths of SRR2584863_1.trim.fastq.gz and 
+SRR2584863_2.trim.fastq.gz?
+
+The arch command is useful for that purpose
+
+arch -arch_name binary args ...
+See man arch for more details
+
+Example without rosetta:
+
+echo "arch" > build.sh
+arch -arm64 /bin/bash ./build.sh 
+Output:
+
+arm64
+Example with rosetta:
+
+echo "arch" > build.sh
+arch -x86_64 /bin/bash ./build.sh
+Output:
+
+i386
+ 
+set -e
+cd ~/dc_workshop/results
+genome = ~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
+
+bwa index $genome
+
+mkdir -p sam bam bcf vcf
+
+for fq1 in ~/dc_workshop/data/trimmed_fastq/*_1.trim.fastq.gz
+    do
+    echo "working with file $fq1"
+
+    base =$(basename $fq1 _1.trim.fastq.gz)
+    echo " base name is $base"
+
+    fq1 = ~/dc_workshop/data/trimmed_fastq/${base}_1.trim.fastq.gz
+    fq2 = ~/dc_workshop/data/trimmed_fastq/${base}_2.trim.fastq.gz
+    sam = ~/dc_workshop/results/sam/${base}.aligned.sam
+    bam = ~/dc_workshop/results/bam/${base}.aligned.bam
+    sorted_bam = ~/dc_workshop/results/bam/${base}.aligned.sorted.bam
+    raw_bcf = ~/dc_workshop/results/bcf/${base}_raw.bcf
+    variants = ~/dc_workshop/results/vcf/${base}_variants.vcf
+    final_variants = ~/dc_workshop/results/vcf/${base}_final_variants.vcf
+    
+    set -e
+    cd ~/dc_workshop/results
+
+    genome = ~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
+
+    bwa index $genome
+
+    mkdir -p sam bam bcf vcf
+    
+    
+    fq1 =~/dc_workshop/data/trimmed_fastq/${base}_1.trim.fastq.gz
+    fq2 = ~ /dc_workshop/data/trimmed_fastq/${base}_2.trim.fastq.gz
+    sam = ~/dc_workshop/results/sam/${base}.aligned.sam
+    bam = ~/dc_workshop/results/bam/${base}.aligned.bam
+    sorted_bam = ~/dc_workshop/results/bam/${base}.aligned.sorted.bam
+    raw_bcf = ~/dc_workshop/results/bcf/${base}_raw.bcf
+    variants = ~/dc_workshop/results/vcf/${base}_variants.vcf
+    final_variants = ~/dc_workshop/results/vcf/${base}_final_variants.vcf 
+
+    bwa mem $genome $fq1 $fq2 > $sam
+    samtools view -S -b $sam $bam
+    samtools sort -o $sorted_bam $bam
+    samtools index $sorted_bam
+    bcftools mpileup -O b -o $raw_bcf -f $genome $sorted_bam
+    bcftools call --ploidy 1 -m -v -o $variants $raw_bcf 
+    vcfutils.pl varFilter $variants $final_variants
+    done
+    
+    
+```{bash, eval=FALSE, engine="sh"}
+
+set -e
+cd ~/dc_workshop/results
+
+genome = ~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
+
+bwa index $genome
+
+mkdir -p sam bam bcf vcf
+
+for fq1 in ~/dc_workshop/data/trimmed_fastq_small/*_1.trim.sub.fastq
+    do
+    echo "working with file $fq1"
+
+    base =$(basename $fq1 _1.trim.sub.fastq)
+    echo " base name is $base"
+
+    fq1 =~/dc_workshop/data/trimmed_fastq_small/${base}_1.trim.sub.fastq
+    fq2 = ~ /dc_workshop/data/trimmed_fastq_small/${base}_2.trim.sub.fastq
+    sam = ~/dc_workshop/results/sam/${base}.aligned.sam
+    bam = ~/dc_workshop/results/bam/${base}.aligned.bam
+    sorted_bam = ~/dc_workshop/results/bam/${base}.aligned.sorted.bam
+    raw_bcf = ~/dc_workshop/results/bcf/${base}_raw.bcf
+    variants = ~/dc_workshop/results/vcf/${base}_variants.vcf
+    final_variants = ~/dc_workshop/results/vcf/${base}_final_variants.vcf 
+ 
+    bwa mem $genome $fq1 $fq2 > $sam
+    samtools view -S -b $sam $bam
+    samtools sort -o $sorted_bam $bam
+    samtools index $sorted_bam
+    bcftools mpileup -O b -o $raw_bcf -f $genome $sorted_bam
+    bcftools call --ploidy 1 -m -v -o $variants $raw_bcf 
+    vcfutils.pl varFilter $variants $final_variants
+   
+    done
+
+```
+
+bwa mem data/ref_genome/ecoli_rel606.fasta data/trimmed_fastq_small/SRR2589044_1.trim.sub.fastq data/trimmed_fastq_small/SRR2589044_2.trim.sub.fastq > results/sam/SRR2589044.aligned.sam
+
+samtools view -S -b results/sam/SRR2589044.aligned.sam results/bam/SRR2589044.aligned.bam
+bcftools mpileup -O b -o results/bcf/SRR2589044_raw.bcf \
+-f data/ref_genome/ecoli_rel606.fasta results/bam/SRR2589044.aligned.sorted.bam
+
+
+samtools sort -o results/bam/SRR259044.aligned.sorted.bam results/bam/SRR2589044.aligned.bam 
+bcftools mpileup -O b -o results/bcf/SRR2589044_raw.bcf \
+-f data/ref_genome/ecoli_rel606.fasta results/bam/SRR259044.aligned.sorted.bam
+
+bcftools call --ploidy 1 -m -v -o results/vcf/SRR2589044_variants.vcf results/bcf/SRR2589044_raw.bcf 
+
+vcfutils.pl varFilter results/vcf/SRR2589044_variants.vcf results/vcf/SRR2589044_final_variants.vcf
+vcfutils.pl varFilter results/vcf/SRR2584866_variants.vcf  results/vcf/SRR2584866_final_variants.vcf
+
+for trimming 
+(variant) (samtools) ggiaever@Guris-MBP-2 untrimmed_fastq % trimmomatic PE SRR2584866_1.fastq.gz SRR2584866_2.fastq.gz 
+Input Read Pairs: 2768398 Both Surviving: 2053874 (74.19%) Forward Only Surviving: 578725 (20.90%) Reverse Only Surviving: 131060 (4.73%) Dropped: 4739 (0.17%)
+
+for SRR2589044
+1) Dropped: 2515 (0.23%)
+2) Surviving: 1020792 (92.20%) 
