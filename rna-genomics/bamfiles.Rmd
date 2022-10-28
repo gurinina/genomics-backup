@@ -47,7 +47,7 @@ What's in a SAM/BAM file
 
 A BAM file is just a compressed SAM file. The file begins with a header, which is optional.The header is used to describe source of data, reference sequence, method of alignment, etc., this will change depending on the aligner being used. Following the header is the alignment section. Each line that follows corresponds to alignment information for a single read. Each alignment line has 11 mandatory fields for essential mapping information and a variable number of other fields for aligner specific information. An example entry from a SAM file is displayed below with the different fields highlighted.
 
-![Figure 1.](bam_images/sam_bam_1.png)
+![Figure 1.](figures/sam_bam_1.png)
 
 Additionally tags (or attribute) can be added to each of of the lines. These tags give some additional information on the alignment. The number and type of tags varies between different alignment tools and the settings within these tools. The ‘CIGAR’ (Compact Idiosyncratic Gapped Alignment Report) string is how the SAM/BAM format represents spliced alignments. Understanding the CIGAR string will help you understand how your query sequence aligns to the reference genome. For example, the position stored is the left most coordinate of the alignment. To get to the right coordinate, you have to parse the CIGAR string.
 
@@ -86,6 +86,8 @@ SAMtools can help us to make the content readable.
 
 ```{bash, eval=FALSE, engine="sh"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view aln.bam | head
 
 ```
@@ -102,16 +104,20 @@ The default for samtools sort is sorting by position.
 
 There are more sorting possibilities to be found with samtools sort --help.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools sort aln.bam -o sorted.bam
 
 ```
 
 Only the input file name needs to be specified, based on this name a .bai (BAM index) is produced.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 ls -lh aln.bam
 ls -lh sorted.bam
 samtools view aln.bam | head -n 1
@@ -123,16 +129,20 @@ You should use use additional threads (if they are available) to speed up sortin
 
 Time taken using one thread (default).
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 time samtools sort aln.bam -o sorted.bam
 
 ```
 
 Time taken using four threads.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 time samtools sort -@ 4 aln.bam -o sorted.bam
 
 ```
@@ -155,8 +165,10 @@ Creating a BAM index file
 
 Various tools require BAM index files, such as IGV, which is a tool that can be used for visualising BAM files.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools index sorted.bam
 
 ```
@@ -164,22 +176,28 @@ samtools index sorted.bam
 index outputs two files, the index.bam file and an index.bam.bai file
 
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools index sorted.bam sorted.bai
 
 ```
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view sorted.bam IX:20000-30000 
 
 ```
 
 In addition, you can save the output as another BAM file if you want. You need -b when piping to another command.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view -b sorted.bam "IX:20000-30000" > sorted_chrIX_20000_30000.bam
 
 samtools view sorted_chrIX_20000_30000.bam| head -n 1
@@ -191,8 +209,10 @@ samtools view sorted_chrIX_20000_30000.bam| head -n 1
 mpileup The mpileup command produces a pileup format (or BCF) file giving, for each genomic coordinate, the overlapping read bases and indels at that position in the input BAM files(s).
 This can be used for SNP calling for example.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools mpileup -f FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa -s sorted.bam | head
 
 ```
@@ -202,8 +222,10 @@ Looking at the content of the file using samtools view:
 
 `samtools flagstat` will indicate that some reads (about 10%) mapped to different chromosomes.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools flagstat aln.bam
 
 ```
@@ -217,16 +239,20 @@ They may seem confusing at first but the encoding allows details about a read to
 The trick is to convert the numerical digit into binary, and then use the table to interpret the binary numbers, where 1 = true and 0 = false.
 
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools flags
 
 ```
 
 Find out about a `73` flag.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools flags 73
 
 ```
@@ -238,15 +264,19 @@ When the -c option is added the filtered selection is counted.
 
 Count the total number of records:
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view -c sorted.bam
 ```
 
 Count the reads that align to the reverse strand:
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view -f 20 -c sorted.bam
 
 ```
@@ -257,16 +287,20 @@ Count the reads that do align:
 
 Use `-F 4` to filter out unmapped reads.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view -F 4 -b sorted.bam > mapped.bam
 
 ```
 
 Use `-f 4` to keep only unmapped reads.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view -f 4 -b sorted.bam > unmapped.bam
 
 ```
@@ -281,8 +315,10 @@ When a read multimaps (aligned to multiple positions in the genome), each of the
 
 Count the reads that align to the forward strand:
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view -F 20 -c sorted.bam
 
 ```
@@ -296,8 +332,10 @@ A BAM file is just a SAM file but stored in binary format; you should always con
 Note: remember to use `-h` to ensure the SAM file contains the sequence header information.
 Generally, I recommend storing only sorted BAM files as they use even less disk space and are faster to process.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view -h aln.bam > aln.sam
 
 
@@ -307,24 +345,30 @@ Notice that the SAM file is much larger than the BAM file.
 
 Size of SAM file.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 ls -lh aln.sam
 
 ```
 
 Size of BAM file.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 ls -lh aln.bam
 
 ```
 
 We can use `head` to view a SAM file.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 head aln.sam
 
 ```
@@ -339,16 +383,20 @@ You can generate this information again by running the command below, where `ref
 
 For simple statistics use `samtools flagstat`.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools flagstat sorted.bam
 
 ```
 
 For more stats, use `samtools stats`.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools stats sorted.bam | grep ^SN
 
 # The columns are: GC%, unique sequence percentiles, 10th, 25th, 50th, 75th and 90th depth percentile
@@ -365,8 +413,10 @@ The output of idxstats is a file with four tab-delimited columns:
 3.  Number of mapped reads
 4.  Number of unmapped reads
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools idxstats sorted.bam
 
 ```
@@ -375,16 +425,20 @@ We can use this with `awk` to calculate:
 
 The number of mapped reads by summing the third column.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools idxstats sorted.bam  | awk '{s+=$3} END {print s}'
 
 ```
 
 The number of reads, which is the sum of mapped and unmapped reads.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools idxstats sorted.bam | awk '{s+=$3+$4} END {print s}'
 
 samtools view -F 4 -b sorted.bam > mapped.bam
@@ -400,8 +454,10 @@ The `calmd` or `fillmd` tool is useful for visualising mismatches and insertions
 
 Note the need for a second -b inn the second command:
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view -b sorted.bam | samtools fillmd -b -e  - FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa > fillmd.bam
 
 samtools view fillmd.bam | head -n 1
@@ -419,30 +475,29 @@ Coverage can mean the:
 
 `samtools depth` will return three columns: reference, position, and coverage.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools depth sorted.bam | head
 
 ```
 
-The average depth can be calculated by summing the third column and dividing by the total number of bases (be sure to use `-a`).
 
-```{bash}
+```{bash, engine.opts="-i"}
 
-samtools depth -@ 2 -a sorted.bam | perl -ane '$t += $F[2]; END {$cov = $t / $.; printf "Bases covered:\t%.3f\nCoverage:\t%.3f\n", $., $cov}'
-
-```
-
-```{bash}
-
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools coverage sorted.bam
 
 ```
 
 If you want reads mapped to a single reference (e.g. chromosome), just specify the `ref` and leave out the start and end values.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view sorted.bam X | head -n 1
 
 ```
@@ -455,18 +510,14 @@ Returning to our coverage definition at the start of this section:
 With SAMtools it is also possible to select alignments with a minimal mapping quality.
 Alignments with a maximal score (60 for hisat2 output files and 255 for STAR output files) are truly unique:
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view -q 60 -c sorted.bam
 
 ```
 
-
-```{bash}
-
-samtools view --help
-
-```
 
 ## 
 
@@ -483,8 +534,10 @@ The output file produced by featureCounts is a tab-delimited file that can be op
 
 Key Points The SAM/BAM format is the end-result of a read alignment to a reference genome.
 
-```{bash}
+```{bash, engine.opts="-i"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 samtools view -bT FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz aln.sam > aln.bam
 
 ```
@@ -505,6 +558,8 @@ In this study we are just looking for differentially expressed genes so our feat
 
 ```{bash, eval=FALSE, engine="sh"} 
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate rnaseq
 featureCounts -O -t gene -g gene_id -a FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.96.gtf.gz -o counts.txt BAM/*.bam
 
 ```

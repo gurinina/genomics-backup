@@ -2,15 +2,23 @@
 
 ```{r setup, include = FALSE}
 
-knitr::opts_chunk$set(engine.opts = list(bash = "-l"))
+Sys.setenv(BASH_ENV="~/.bashrc86")
+# env /usr/bin/arch -x86_64 /bin/zsh --login 
+knitr::opts_chunk$set(engine.opts = list(bash="--init-file ~/.bashrc86 -i", zsh = '/bin/zsh'))
+
 ```
 This is just a reiteration of the files you should have already downloaded. So hopefully you have your files already in your FASTQ directory. So let's skip this part.
 
 We are going to walk steps of a Next Generation Sequencing pipeline using samples from Saccharomyces cerevisiae because the file is nice and small. The Rmd for this file can be found
 [here](https://github.com/gurinina/omic_sciences/blob/main/08-NGS-pipeline.Rmd). Navigate to your FASTQ directory:
 
-```{bash}
-cd FASTQ
+```{bash, engine.opts="-i"}
+pwd
+cd ~
+pwd
+cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+
+
 ```
 
 
@@ -34,28 +42,37 @@ ftp://ftp.sra.ebi.ac.uk/vol1/<file-type>/ERR164/ERR164407
 
 It follows that the ftp addresses for our files are as listed below. We can download the files using the curl command. Options: -L, follows redirects, -O, write the output to a file named as the remote file, -R, time the download. First navigate to the FASTQ directory and then type:
 ```{bash, eval=FALSE, engine="sh"}
+
+cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+
 curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458493/ERR458493.fastq.gz
 curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
 curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458495/ERR458495.fastq.gz
 curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458500/ERR458500.fastq.gz
 curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458501/ERR458501.fastq.gz
 curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458502/ERR458502.fastq.gz
+
 ```
 
 If you are on a PC, you need to use the wget command. For wget it would be, e.g.:
 
 ```{bash, eval=FALSE, engine="sh"}
+
 wget https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
+
 ```
 
 These files take about 5' to download.
 
 The two other big files that you have are, first the DNA sequence, and second the GTF file, which is a file describing genomic features. You can get these from the ensembl database, which is the go to database for annotated genomes.
 ```{bash, eval=FALSE, engine="sh"}
-cd FASTQ/r64
+
+cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+
 curl -L -R -O ftp://ftp.ensembl.org/pub/release-96/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz
 
 curl -L -R -O ftp://ftp.ensembl.org/pub/release-96/gtf/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.96.gtf.gz
+
 
 ```
 
@@ -64,7 +81,9 @@ curl -L -R -O ftp://ftp.ensembl.org/pub/release-96/gtf/saccharomyces_cerevisiae/
 We've talked about and looked at fastq files a little bit, but let's look at them here in there raw format. First we have to unzip one. 
 
 To unzip you use gunzip and you need the -c to leave the gz file behind:
-```{bash}
+```{bash, engine.opts="-i"}
+
+cd ~/Documents/RProjects/genomics/rna-genomics
 
 gunzip -c FASTQ/ERR458493.fastq.gz > FASTQ/ERR458493.fastq
 head -n 8 FASTQ/ERR458493.fastq
@@ -79,20 +98,25 @@ Third line: A separator, which is simply a plus (+) sign.
 Forth line: The base call quality scores. These are Phred +33 encoded, using ASCII characters to represent the numerical quality scores.
 
 We can count the number of lines
-```{bash}
+```{bash, engine.opts="-i"}
+
+cd ~/Documents/RProjects/genomics/rna-genomics
+
 ls -lh
 expr $(cat FASTQ/ERR458493.fastq | wc -l) / 4
+
 ```
 
 Quality control with [fastqc](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 
 Use fastqc to check the quality of our fastq files, let's just look at one quickly since we've already looked at one in detail:
-```{bash}
-echo "arch" > build.sh
-bash | arch -x86_64 /bin/bash ./build.sh
+```{bash, engine.opts="-i"}
+
+cd ~/Documents/RProjects/genomics/rna-genomics
 source $HOME/miniconda3-intel/bin/activate
 conda activate rnaseq
 fastqc FASTQ/ERR458493.gz -t 4 -o FASTQC
+
 ```
 
 We've already discussed fastqc files so let's have a look at them.
@@ -334,9 +358,9 @@ Refer to Users Manual for detailed description to the arguments.
 
 The alignment command is as follows:
 
-```{bash}
-echo "arch" > build.sh
-arch -x86_64 /bin/bash ./build.sh
+```{bash, eval=FALSE, engine="sh"}
+
+cd ~/Documents/RProjects/genomics/rna-genomics
 source $HOME/miniconda3-intel/bin/activate
 conda activate rnaseq
 
@@ -354,10 +378,14 @@ We can run all of these commands by creating a shell script. You should find thi
 
 Let's try running it now. 
 
-```{bash}
-cd FASTQ
+```{bash, eval=FALSE, engine="sh"}
+
+cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+
+
 chmod 777 subreadMapping.sh
 sh subreadMapping.sh
+
 ```
 
 
