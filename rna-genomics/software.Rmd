@@ -1,7 +1,11 @@
 # Software
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(engine.opts = list(bash = "-l"))
+
+Sys.setenv(BASH_ENV="~/.bashrc86")
+# env /usr/bin/arch -x86_64 /bin/zsh --login 
+knitr::opts_chunk$set(engine.opts = list(bash="--init-file ~/.bashrc86 -i", zsh = '/bin/zsh'))
+
 ```
 
 **Conda for bioinformatics**
@@ -98,9 +102,9 @@ source $HOME/miniconda3/bin/activate
 
 **For mac m1 users:**
 You need to switch to to the intel architecture to activate. You need to do that everytime you use conda. You do that like this:
-```{bash}
+```{bash, eval=FALSE, engine="sh"}
 
-env /usr/bin/arch -x86_64 /bin/zsh --login 
+
 source $HOME/miniconda3-intel/bin/activate
 
 ```
@@ -371,7 +375,7 @@ Each of the three file types has its own directory on the FTP server. A folder e
 ftp://ftp.sra.ebi.ac.uk/vol1/<file-ype>/ERR164/ERR164407
 
 It follows that the ftp addresses for our files are as listed below. We can download the files using the curl command. Options: -L, follows redirects, -O, write the outputto a file named as the remote file, -R, time the download. Make a FASTQ directory and then navigate there. You can copy and paste all of the curl lines in at once:
-```{r eval = FALSE}
+```{bash, eval=FALSE, engine="sh"}
 
 cd FASTQ
 curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458493/ERR458493.fastq.gz
@@ -391,7 +395,7 @@ wget https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
 These files all take abovt 5' to download.
 
 The two other big files that you have are, first the DNA sequence, and second the GTF file, which is a file describing genomic features. You can get these from the ensembl database, which is the go to database for annotated genomes. Make a folder called r64 inside your FASTQ folder, them navigate there.
-```{r eval = FALSE}
+```{bash, eval=FALSE, engine="sh"}
 
 cd FASTQ/r64
 curl -L -R -O ftp://ftp.ensembl.org/pub/release-96/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz
