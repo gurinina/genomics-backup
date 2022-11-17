@@ -37,3 +37,22 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# mac folders
+.DS_Store
+
+# RProj
+.RProj
+
+# RData
+.RData
+
+# Rhistory
+.Rhistory
+
+# RProj.user
+.Rproj.user
+
+# rsconnect
+rsconnect
+

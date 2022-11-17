@@ -2,9 +2,7 @@
 
 ```{r setup, include = FALSE}
 
-Sys.setenv(BASH_ENV="~/.bashrc86")
-# env /usr/bin/arch -x86_64 /bin/zsh --login 
-knitr::opts_chunk$set(engine.opts = list(bash="--init-file ~/.bashrc86 -i", zsh = '/bin/zsh'))
+knitr::opts_chunk$set(engine.opts = list(zsh = '/bin/zsh'))
 
 ```
 
@@ -36,6 +34,7 @@ Note: when you read 'package' in the text above, just think 'software'.  An envi
 
 **Install Miniconda**
 Conda comes in two flavors:  Anaconda and Miniconda.  We want to install Miniconda, because it's much more lightweight while still meeting all of our needs.  Importantly, when we install Miniconda, we'll be getting the Python programming language as part of that installation.
+
 
 **Mac OS**
 Download the script on this [page](https://docs.conda.io/en/latest/miniconda.html) for your operating system
@@ -163,7 +162,8 @@ conda info --envs #to view all the environments available to you (note, since
 you just installed miniconda, you'll only have a 'base' environment available)
 One of the things that makes Conda so great for software installation is that it has access to various channels where many pre-packaged bioinformatics programs can be downloaded with all their dependencies.  Let's configure our Conda installation now so that it knows which channels to look for.
 
-```{bash, eval=FALSE, engine="sh"}
+
+```{zsh, eval=FALSE, engine="sh"}
 
 conda config --add channels defaults
 conda config --add channels bioconda
@@ -177,7 +177,8 @@ Some of the most basic pieces of command-line software we discuss and use at the
 
 Begin by creating an empty environment called 'rnaseq'...or name it whatever you'd like
 
-```{bash, eval=FALSE, engine="sh"}
+
+```{zsh, eval=FALSE, engine="sh"}
 
 conda create --name rnaseq 
 
@@ -187,14 +188,18 @@ conda create --name rnaseq
 
 Now activate your newly created environment
 
-```{bash, eval=FALSE, engine="sh"}
+
+Now activate your newly created environment
+
+```{zsh, eval=FALSE, engine="sh"}
+
 
 conda activate rnaseq 
 
 ```
 
-Notice that your terminal should now show that you have now entered the 'rnaseq' environment. 
 
+Notice that your terminal should now show that you have now entered the 'rnaseq' environment. 
 
 Now let's install some commonly used RNA-seq software inside this environment.  Begin with Subread, which is our go-to tool for read mapping.
 
@@ -202,40 +207,54 @@ Note: if you get a y/n question during installation, respond yes by typing 'y' a
 
 Note: the most important piece of software here is Subread.  If you encounter issues installing FastQC and/or MultiQC, just move on...it will not impact your ability to participate in the course.
 
-```{bash, eval=FALSE, engine="sh"}
+On mac, you can install subread using command below.
+
+```{zsh, eval=FALSE, engine="sh"}
+
 
 conda install -c bioconda subread
 
 ```
 
 
+
 Test to see if it worked by typing:
-```{bash, eval=FALSE, engine="sh"}
+```{zsh, eval=FALSE, engine="sh"}
+
 
 subread-align -v
 
 ```
 
+But windows version is not present in any of the conda channels. So, you need to follow these steps:
+a.	download the “ /subread-2.0.3/subread-2.0.3-Windows-x86_64.tar.gz” manually from https://sourceforge.net/projects/subread/files/subread-2.0.3/ 
+b.	unpack the package using any zip programs you have on your computer (e.g. 7-zip).
+c.	Copy the package to C:/Users/your-name/miniconda3/pkgs/ and the bin content to rnaseq env (as this is the first software you are installing you  may need to generate the bin folder in rnaseq directory).
+d.	Add path of the rnaseq bin folder to the environment variables as done before.
+e.	Restart the prompt.
+
 If your Subread installation worked, then you should see something in your terminal that resembles the output below (basically, Subread is saying "I'm here, now what would you like me to do?!").  If so, take a second to pat yourself on the back – you just installed your first piece of software using Conda! 🎉 🎊
 
 Note: if you are using Windows and the subread installation using conda was unsuccessful, follow the instructions in the Plan B for Windows OS section.
 
+
 **Rinse and repeat**
 Now that you have Subread installed, you're going to install additional software into the same 'rnaseq' environment.  
 
-```{bash, eval=FALSE, engine="sh"}
+
+```{zsh, eval=FALSE, engine="sh"}
 
 conda install -c bioconda fastqc 
 conda install -c bioconda multiqc
 conda install -c conda-forge -c bioconda samtools=1.11
-
 ```
 
 Check that both installed correctly. 
 
+
 When you are done type:
 
-```{bash, eval=FALSE, engine="sh"}
+```{zsh, eval=FALSE, engine="sh"}
 
 conda deactivate
 
@@ -246,10 +265,11 @@ conda install -c bioconda bwa=0.7.17=ha92aebf_3
 conda install -c bioconda bcftools=1.8=h4da6232_3
 conda install -c conda-forge -c bioconda samtools=1.11
 
-
-
-
 ```
+
+
+On windows, samtools doesn't have a PC version, so instead you can install Rsamtools in R.
+
 
 Note: if your laptop runs Windows, you may encounter some issues with fastqc.  It should install without issue but fastqc may not be recognized as an internal or external command, operable program or batch file.  If so, no worries, it won't affect your ability to participate in the course.  However, you may want to try installing a similar program for quality control analysis of raw reads, called fastp.  You can install fastp using conda install -c bioconda fastp. Another alternative is to install FastQC manually and use it in its interactive mode. Instructions for this can be found in the Plan B for Windows OS section.
 
@@ -260,9 +280,10 @@ Check out [this](https://www.anaconda.com/blog/understanding-conda-and-pip) arti
 **Generally useful Conda commands**
 if conda is not working try rerunning
 
-```{bash, eval=FALSE, engine="sh"}
 
-source $HOME/miniconda3/bin/activate or
+```{zsh, eval=FALSE, engine="sh"}
+
+source $HOME/miniconda3/bin/activate
 
 ```
 
@@ -273,26 +294,26 @@ conda update --all #update conda
 nano $HOME/.condarc #view your list of channels 
 
 Don't get carried away with your 'base' conda environment
+
 When you install conda, you automatically get a 'base' environment.  In fact, you may find that when you open your terminal or shell application, that you are placed in the base env by default.  Avoid installing lots of software in base or, eventually, you will run into conflicts.
 
 **Backup plan if Conda doesn't work for you**
 You should only be reading this if the steps above failed.  So, what do you do if Conda doesn't install properly or you aren't able to install the software above?  No worries, we can probably help. In the event that we can't resolve your IT issues, we have a backup plan to help you get the most essential software for the course installed.
 
+
 **Plan B for Mac OS**
 If you’re running a Mac OS, then it's a good idea to install Homebrew, which has nothing to do with Conda but is a fantastic package manager for the MacOS.  Although this isn't essential for the class, it will make your life a lot easier when you try to install software in future.  To get Homebrew, enter the following line into your terminal.
 
-```{bash, eval=FALSE, engine="sh"}
+```{zsh, eval=FALSE, engine="sh"}
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 ```
 
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 Some, but not all, of the software we installed using Conda above is also available for MacOS using Homebrew.  Go ahead and install as follows:
 
 ```{bash, eval=FALSE, engine="sh"}
 
-brew install subread
 brew install fastqc
 brew install samtools
 
@@ -340,7 +361,7 @@ Work through the following steps to use FastQC in its interactive mode:
 9. Steps 5-7 will need to be repeated for each file
 10. After manually saving all of the FastQC reports, you can edit the readMapping.sh in Sublime Text 3 or any text editor to comment out the fastqc command
 
-```{bash, eval=FALSE, engine="sh"}
+```{zsh, eval=FALSE, engine="sh"}
 
 fastqc *.gz -t 4 -o ../FASTQC
 
@@ -348,17 +369,149 @@ fastqc *.gz -t 4 -o ../FASTQC
 
 so that it is ignored but the rest of the script will run. MultiQC will be able to find your FastQC reports if you saved them to the correct folder
 
-**Files for Shell-Genomics**
+**Files for shell-genomics**
 
 Setup: Download files required for the lesson(https://figshare.com/articles/dataset/Data_Carpentry_Genomics_beta_2_0/7726454)
 
-Download the file called: shell_data.tar.gz and extract it into a directory call shell_data in your home folder (/Users/dcuser)
+Download the file called: shell_data.tar.gz and extract it into a directory call shell_data in your home folder (/Users/your username)
 
-**switch to reads2counts here**
-We are going to walk steps of a Next Generation Sequencing pipeline using samples from Saccharomyces cerevisiae because the file is nice and small. The Rmd for this file can be found
-[here](https://github.com/gurinina/omic_sciences/blob/main/08-NGS-pipeline.Rmd). 
+**Files for wrangling-genomics**
 
-For our examples we will focus on RNA-seq as it is the most manageable computationally as opposed to methylation, Chip-chip and DNA variant analysis. Its also, probably for that reason, one of the more frequently used technologies in research, likely for this reasons.
+First make these directories in your home directory by typing
+
+```{zsh, eval=FALSE, engine="sh"}
+mkdir -p ~/dc_workshop/data/untrimmed_fastq
+```
+
+Then download these files into that directory:
+**macOS**
+```{zsh, eval=FALSE, engine="sh"}
+
+
+cd ~/dc_workshop/data/untrimmed_fastq
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_1.fastq.gz
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_2.fastq.gz
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_1.fastq.gz
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_2.fastq.gz
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_1.fastq.gz
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_2.fastq.gz
+
+```
+
+**macOS**
+```{zsh, eval=FALSE, engine="sh"}
+
+
+cd ~/dc_workshop/data/untrimmed_fastq
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_2.fastq.gz
+
+```
+
+We will also download a set of trimmed FASTQ files to work with. These are small subsets of our real trimmed data, 
+and will enable us to run our variant calling workflow quite quickly. 
+
+I couldn't get this to work -- just do it manually -- 
+```{zsh, eval=FALSE, engine="sh"}
+
+cd ~/dc_workshop
+curl L -o sub.tar.gz https://ndownloader.figshare.com/files/14418248
+
+mkdir -p /dc_workshop/data/trimmed_fastq_small 
+cd ~/dc_workshop/data/trimmed_fastq_small
+tar -xvf sub.tar.gz    
+mv -v sub/* ../trimmed_fastq_small
+
+```
+
+
+**files for RNA-genomics**
+We are going to walk steps of a Next Generation Sequencing pipeline using samples from Saccharomyces cerevisiae because the file is nice and small.  
+
+For our examples we will focus on RNA-seq as it is the most manageable computationally as opposed to methylation, Chip-chip and DNA variant analysis. Its also, one of the more frequently used technologies in research, likely for this reason.
+
+        added by them:   BAM/ERR458501.bam.indel.vcf
+  =
+        added by them:   FASTQ/.DS_Store
+        added by them:   FASTQ/ERR458493.fastq
+        added by them:   FASTQ/ERR458493.fastq.gz
+        added by them:   FASTQ/ERR458494.fastq.gz
+        added by them:   FASTQ/ERR458495.fastq.gz
+        added by them:   FASTQ/ERR458500.fastq.gz
+        added by them:   FASTQ/ERR458501.fastq.gz
+        added by them:   FASTQ/ERR458502.fastq.gz
+        added by them:   FASTQ/Saccharomyces_cerevisiae.R64-1-1.96.gtf
+        added by them:   FASTQ/Saccharomyces_cerevisiae.R64-1-1.96.gtf.gz
+        added by them:   FASTQ/multiqc_data/multiqc.log
+        added by them:   FASTQ/multiqc_data/multiqc_citations.txt
+        added by them:   FASTQ/multiqc_data/multiqc_data.json
+        added by them:   FASTQ/multiqc_data/multiqc_fastqc.txt
+        added by them:   FASTQ/multiqc_data/multiqc_general_stats.txt
+        added by them:   FASTQ/multiqc_data/multiqc_sources.txt
+        added by them:   FASTQ/multiqc_data_1/multiqc.log
+        added by them:   FASTQ/multiqc_data_1/multiqc_citations.txt
+        added by them:   FASTQ/multiqc_data_1/multiqc_data.json
+        added by them:   FASTQ/multiqc_data_1/multiqc_fastqc.txt
+        added by them:   FASTQ/multiqc_data_1/multiqc_general_stats.txt
+        added by them:   FASTQ/multiqc_data_1/multiqc_sources.txt
+        added by them:   FASTQ/multiqc_data_2/multiqc.log
+        added by them:   FASTQ/multiqc_data_2/multiqc_citations.txt
+        added by them:   FASTQ/multiqc_data_2/multiqc_data.json
+        added by them:   FASTQ/multiqc_data_2/multiqc_fastqc.txt
+        added by them:   FASTQ/multiqc_data_2/multiqc_general_stats.txt
+        added by them:   FASTQ/multiqc_data_2/multiqc_snippy.txt
+        added by them:   FASTQ/multiqc_data_2/multiqc_sources.txt
+        added by them:   FASTQ/multiqc_report.html
+        added by them:   FASTQ/multiqc_report_1.html
+        added by them:   FASTQ/multiqc_report_2.html
+        added by them:   FASTQ/myBAM_filtered.bam
+        added by them:   FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.96.gtf.gz
+        added by them:   FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa
+        added by them:   FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.fai
+        added by them:   FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz
+        added by them:   FASTQ/r64/r64bread.index.00.b.array
+        added by them:   FASTQ/r64/r64bread.index.00.b.tab
+        added by them:   FASTQ/r64/r64bread.index.files
+        added by them:   FASTQ/r64/r64bread.index.log
+        added by them:   FASTQ/r64/r64bread.index.reads
+        added by them:   FASTQ/subreadMapping.sh
+        added by us:     RNA-genomics/01-reads2counts.Rmd
+        added by us:     RNA-genomics/02-bamfiles.Rmd
+        added by them:   css/style.css
+        added by them:   css/toc.css
+        both added:      figures/DESeq2_normalization.png
+        both added:      figures/DESeq2_step1.png
+        both added:      figures/DESeq2_step2.png
+        both added:      figures/RNA-seq-analysis-flow-chart-An-example-RNA-seq-analysis-workflow-is-depicted-for-a.png
+        both added:      figures/RNAseq_workflow.png
+        both added:      figures/count-matrix.png
+        both added:      figures/count_modes.png
+        both added:      figures/countingreads_fc.png
+        both added:      figures/counts-workflow.png
+        both added:      figures/f1000research-4-7573-g0000.jpeg
+        both added:      figures/featurecount_ambiguous.png
+        both added:      figures/gtf.png
+        both added:      figures/multioverlap.png
+        both added:      figures/rnaseq_workflow2.png
+        both added:      figures/rnaseqpipeline.png
+        both added:      figures/union.png
+        both added:      figures/variant_calling_workflow_cleanup.png
+        both added:      figures/workflow_DESeq2.png
+        both added:      figures/workflow_gene_quant.png
+        deleted by us:   rna-genomics/_bookdown.yml
+        deleted by us:   rna-genomics/_output.yml
+        deleted by us:   rna-genomics/aln.bam
+        both deleted:    rna-genomics/bamfiles.Rmd
+        deleted by us:   rna-genomics/index.Rmd
+        both deleted:    rna-genomics/reads2counts.Rmd
+        both deleted:    rna-genomics/style.css
+        added by us:     wrangling-genomics/css/style.css
+
+Download the file called: shell_data.tar.gz and extract it into a directory call shell_data in your home folder (/Users/your-username/shell_data)
 
 The samples can be downloaded from the ENA:
 The [European Nucleotide Archive (EMBL-EBI)](http://www.ebi.ac.uk/ena>)
@@ -375,7 +528,8 @@ Each of the three file types has its own directory on the FTP server. A folder e
 ftp://ftp.sra.ebi.ac.uk/vol1/<file-ype>/ERR164/ERR164407
 
 It follows that the ftp addresses for our files are as listed below. We can download the files using the curl command. Options: -L, follows redirects, -O, write the outputto a file named as the remote file, -R, time the download. Make a FASTQ directory and then navigate there. You can copy and paste all of the curl lines in at once:
-```{bash, eval=FALSE, engine="sh"}
+
+```{zsh, eval=FALSE, engine="sh"}
 
 cd FASTQ
 curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458493/ERR458493.fastq.gz
@@ -388,19 +542,51 @@ curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458502/ERR458502.fastq.gz
 
 If you are on a PC, you need to use the wget command. For wget it would be, e.g.:
 
-```{bash, eval=FALSE, engine="sh"}
 wget https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
+
+It follows that the ftp addresses for our files are as listed below. We can download the files using the curl command. Options: -L, follows redirects, -O, write the outputto a file named as the remote file, -R, time the download. Make a FASTQ directory and then navigate there.
+
+PC users need to download wget, if they haven't already:
+https://www.jcchouinard.com/wget/#Download_Wget_on_Windows
+
+Then You can copy and paste all of the wget lines in at once:
+```{zsh, eval=FALSE, engine="sh"}
+
+cd FASTQ
+wget https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458493/ERR458493.fastq.gz
+wget https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
+wget https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458495/ERR458495.fastq.gz
+wget https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458500/ERR458500.fastq.gz
+wget https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458501/ERR458501.fastq.gz
+wget https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458502/ERR458502.fastq.gz
+
 ```
 
 These files all take abovt 5' to download.
 
 The two other big files that you have are, first the DNA sequence, and second the GTF file, which is a file describing genomic features. You can get these from the ensembl database, which is the go to database for annotated genomes. Make a folder called r64 inside your FASTQ folder, them navigate there.
-```{bash, eval=FALSE, engine="sh"}
 
-cd FASTQ/r64
+**macOS**
+```{zsh, eval=FALSE, engine="sh"}
+
+cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+
 curl -L -R -O ftp://ftp.ensembl.org/pub/release-96/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz
 
 curl -L -R -O ftp://ftp.ensembl.org/pub/release-96/gtf/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.96.gtf.gz
+
+
+```
+
+
+**Windows**
+```{zsh, eval=FALSE, engine="sh"}
+
+cd FASTQ/r64
+wget https://ftp.ensembl.org/pub/release-96/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz
+
+wget https://ftp.ensembl.org/pub/release-96/gtf/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.96.gtf.gz
+
 
 ```
 
