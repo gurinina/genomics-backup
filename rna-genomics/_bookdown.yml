@@ -1,5 +1,0 @@
-book_filename: rna-genomics
-new_session: yes
-rmd_files: ["index.Rmd","bamfiles.Rmd", "reads2counts.Rmd",
- "exploratory-analysis.Rmd"]
-delete_merged_file: true
