@@ -188,14 +188,14 @@ would write sed -n 3,8p
 
 Enter the following command from within the `untrimmed_fastq` directory: 
 
-```{zsh, engine.opts="-i"}
+```{zsh, eval=FALSE, engine="sh"}
 
 cd ~/shell_data/untrimmed_fastq
 sed -n 3,8p SRR098026.fastq 
 
 ```
 
-This will print out all of the contents of the `SRR098026.fastq ` to the screen.
+This will print out the 3rd and 8th lines of the `SRR098026.fastq ` to the screen.
 
 
 `cat` is a terrific program, but when the file is really big, it can
