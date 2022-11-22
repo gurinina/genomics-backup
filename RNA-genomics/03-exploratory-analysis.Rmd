@@ -348,12 +348,13 @@ The design formula `design = ~genome` tells DESeq2 which factors in the metadata
 
 The design can include multiple factors that are columns in the metadata. In this case, the factor that you are testing for comes last, and factors that you want to account for come first. E.g. To test for differences in condition while accounting for sex and age: `design = ~ sex + age + condition`. It's also possible to include time series data and interactions.
 
-## 2. DESeq2 count normalization
+## DESeq2 count normalization
 
 Let’s see how, in practice, we can use DESeq2 median-of-ratios method to normalize the gene counts.
 
 Geometric mean:
-
+exp(mean(log(data[data>0])))
+  $$geometricmean = exp(mean(log(x[x>0])))$$
 	$$(\prod_{x = 1}^{n})^ \frac{1}{n} = \sqrt[n]{x_{1}x_{2}...x_{n}}$$
 
 Step 1: creates a pseudo-reference sample (row-wise geometric mean).

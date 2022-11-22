@@ -15,6 +15,7 @@ bookdown::gitbook:
       facebook: no
     search:
       engine: fuse
+    pandoc_args: --lua-filter=parse-html-links.lua
 bookdown::html_chapters:
   css: [css/style.css, css/toc.css]
 bookdown::pdf_book:

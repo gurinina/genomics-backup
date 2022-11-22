@@ -2,9 +2,9 @@
 
 ```{r include = FALSE}
 
-Sys.setenv(BASH_ENV="~/.bashrc")
+Sys.setenv(BASH_ENV="~/.bashrc86")
  
-knitr::opts_chunk$set(engine.opts = list(bash="--init-file ~/.bashrc -i", zsh = '/bin/zsh'))
+knitr::opts_chunk$set(engine.opts = list(bash="--init-file ~/.bashrc86 -i", zsh = '/bin/zsh'))
 
 ```
 
@@ -117,7 +117,7 @@ A few more useful shortcuts:
 
 - <kbdCtrl</kbd+<kbdC</kbdwill cancel the command you are writing, and give you a 
 fresh prompt.
-- <kbdCtrl</kbd+<kbdR</kbdwill do a reverse-search through your command history.  This
+- <kbdCtrl</kbd+<kbdR</kbd will do a reverse-search through your command history.  This
 is very useful.
 - <kbdCtrl</kbd+<kbdL</kbdor the `clear` command will clear your screen.
 
@@ -126,9 +126,10 @@ You can also review your recent commands with the `history` command, by entering
 
 ```{bash, engine.opts="-i"}
 
-history | head -n 10
+history 10
 
 ```
+
 
 to see a numbered list of recent commands. You can reuse one of these commands
 directly by referring to the number of that command.
@@ -153,6 +154,8 @@ Type `!` (exclamation point) and then the number of the command from your histor
 You will be glad you learned this when you need to re-run very complicated commands.
 For more information on advanced usage of `history`, read section 9.3 of
 [Bash manual](https://www.gnu.org/software/bash/manual/html_node/index.html).
+
+
 
 ## Exercise
 
@@ -188,7 +191,7 @@ Enter the following command from within the `untrimmed_fastq` directory:
 ```{zsh, engine.opts="-i"}
 
 cd ~/shell_data/untrimmed_fastq
-sed -n 1,20p SRR098026.fastq 
+sed -n 3,8p SRR098026.fastq 
 
 ```
 
@@ -361,7 +364,8 @@ much signal was captured for the base incorporation.
 
 ## Exercise
 
-1. What is the last line of the `~/shell_data/untrimmed_fastq/SRR098026.fastq ` file?
+1. What is the last line of the `~/shell_data/untrimmed_fastq/SRR098026.fastq` file?
+
 2.  From your home directory, and without changing directories,
 use one short command to print the contents of all of the files in
 the `~/shell_data/untrimmed_fastq` directory into one file.
@@ -411,7 +415,7 @@ followed by a space, then the directory name you want to create:
 
 ```{zsh, eval=FALSE, engine="sh"}
 
-cd ~/shell_data/untrimmed_fast
+cd ~/shell_data/untrimmed_fastq
 mkdir backup
 
 ```
@@ -439,8 +443,7 @@ The `mv` command is also how you rename files. Let's rename this file to make it
 ```{zsh, engine.opts="-i"}
 
 cd ~/shell_data/untrimmed_fastq/backup
-
-mv SRR098026-copy.fastq SRR098026-backup.fastq 
+mv SRR098026-copy.fastq SRR098026-backup.fastq
 ls
 
 ```

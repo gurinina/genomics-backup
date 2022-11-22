@@ -16,7 +16,7 @@ We are going to walk steps of a Next Generation Sequencing pipeline using sample
 pwd
 cd ~
 pwd
-cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+cd ~/Documents/RProjects/genomics/RNA-genomics/FASTQ
 
 
 ```
@@ -43,7 +43,7 @@ ftp://ftp.sra.ebi.ac.uk/vol1/<file-type>/ERR164/ERR164407
 It follows that the ftp addresses for our files are as listed below. We can download the files using the curl command. Options: -L, follows redirects, -O, write the output to a file named as the remote file, -R, time the download. First navigate to the FASTQ directory and then type:
 ```{zsh, eval=FALSE, engine="sh"}
 
-cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+cd ~/Documents/RProjects/genomics/RNA-genomics/FASTQ
 
 curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458493/ERR458493.fastq.gz
 curl -L -R -O ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
@@ -58,17 +58,32 @@ If you are on a PC, you need to use the wget command. For wget it would be, e.g.
 
 ```{zsh, eval=FALSE, engine="sh"}
 
-cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
-wget https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
+cd ~/Documents/RProjects/genomics/RNA-genomics/FASTQ
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458493/ERR458493.fastq.gz
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458495/ERR458495.fastq.gz
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458500/ERR458500.fastq.gz
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458501/ERR458501.fastq.gz
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458502/ERR458502.fastq.gz
+ ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458493/ERR458493.fastq.gz
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458495/ERR458495.fastq.gz
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458500/ERR458500.fastq.gz
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458501/ERR458501.fastq.gz
+wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458502/ERR458502.fastq.gz
+
 
 ```
 
 These files take about 5' to download.
 
 The two other big files that you have are, first the DNA sequence, and second the GTF file, which is a file describing genomic features. You can get these from the ensembl database, which is the go to database for annotated genomes.
+
+**macOS**
 ```{zsh, eval=FALSE, engine="sh"}
 
-cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+mkdir -p ~/Documents/RProjects/genomics/RNA-genomics/FASTQ/r64
+cd ~/Documents/RProjects/genomics/RNA-genomics/FASTQ/r64
 
 curl -L -R -O ftp://ftp.ensembl.org/pub/release-96/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz
 
@@ -77,6 +92,18 @@ curl -L -R -O ftp://ftp.ensembl.org/pub/release-96/gtf/saccharomyces_cerevisiae/
 
 ```
 
+**Windows**
+```{zsh, eval=FALSE, engine="sh"}
+
+mkdir -p ~/Documents/RProjects/genomics/RNA-genomics/FASTQ/r64
+cd ~/Documents/RProjects/genomics/RNA-genomics/FASTQ/r64
+
+wget ftp://ftp.ensembl.org/pub/release-96/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz
+
+wget ftp://ftp.ensembl.org/pub/release-96/gtf/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.96.gtf.gz
+
+
+```
 ## Fastq files
 
 We've talked about and looked at fastq files a little bit, but let's look at them here in there raw format. First we have to unzip one. 
@@ -84,7 +111,7 @@ We've talked about and looked at fastq files a little bit, but let's look at the
 To unzip you use gunzip and you need the -c to leave the gz file behind:
 ```{zsh, engine.opts="-i"}
 
-cd ~/Documents/RProjects/genomics/rna-genomics
+cd ~/Documents/RProjects/genomics/RNA-genomics
 
 gunzip -c FASTQ/ERR458493.fastq.gz > FASTQ/ERR458493.fastq
 head -n 8 FASTQ/ERR458493.fastq
@@ -101,7 +128,7 @@ Forth line: The base call quality scores. These are Phred +33 encoded, using ASC
 We can count the number of lines
 ```{zsh, engine.opts="-i"}
 
-cd ~/Documents/RProjects/genomics/rna-genomics
+cd ~/Documents/RProjects/genomics/RNA-genomics
 
 ls -lh
 expr $(cat FASTQ/ERR458493.fastq | wc -l) / 4
@@ -113,7 +140,7 @@ Quality control with [fastqc](http://www.bioinformatics.babraham.ac.uk/projects/
 Use fastqc to check the quality of our fastq files, let's just look at one quickly since we've already looked at one in detail:
 ```{zsh, engine.opts="-i"}
 
-cd ~/Documents/RProjects/genomics/rna-genomics
+cd ~/Documents/RProjects/genomics/RNA-genomics
 source $HOME/miniconda3-intel/bin/activate
 conda activate rnaseq
 fastqc FASTQ/ERR458493.fastq.gz -t 4 -o FASTQC
@@ -180,7 +207,7 @@ Next, we want to build an index from our reference fasta file:
 
 ```{zsh, eval=FALSE, engine="sh"}
 
-cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+cd ~/Documents/RProjects/genomics/RNA-genomics/FASTQ
 source $HOME/miniconda3-intel/bin/activate
 conda activate rnaseq
 
@@ -373,7 +400,7 @@ The alignment command is as follows:
 
 ```{zsh, eval=FALSE, engine="sh"}
 
-cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+cd ~/Documents/RProjects/genomics/RNA-genomics/FASTQ
 source $HOME/miniconda3-intel/bin/activate
 conda activate rnaseq
 
@@ -387,7 +414,7 @@ Finally, to create the count matrix we use featureCounts. The command is the fol
 
 ```{zsh, eval=FALSE, engine="sh"}
 
-cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+cd ~/Documents/RProjects/genomics/RNA-genomics/FASTQ
 source $HOME/miniconda3-intel/bin/activate
 conda activate rnaseq
 
@@ -403,7 +430,7 @@ Let's try running it now.
 
 ```{zsh, eval=FALSE, engine="sh"}
 
-cd ~/Documents/RProjects/genomics/rna-genomics/FASTQ
+cd ~/Documents/RProjects/genomics/RNA-genomics/FASTQ
 
 
 chmod 777 subreadMapping.sh

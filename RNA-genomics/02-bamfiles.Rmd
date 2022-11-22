@@ -70,20 +70,21 @@ head aln.bam
 This will give an unreadable result.
 SAMtools can help us to make the content readable.
 
-```{zsh, eval=FALSE, engine="sh"}
+Let's retrieve a bamfile to work with:
+```{zsh, engine.opts="-i"}
 
+cd RNA-genomics/
 
+source $HOME/miniconda3-intel/bin/activate
 conda activate rnaseq
-cd Documents/RProjects/Saccharomyces/FASTQ
 
-curl -o aln.bam ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458493/ERR458493.fastq.gz
+chmod 777 BAM/ERR458493.bam
 
-head aln.bam
+cat BAM/ERR458493.bam > aln.bam
+
 
 ```
 
-This will give an unreadable result.
-SAMtools can help us to make the content readable.
 
 ```{zsh, eval=FALSE, engine="sh"}
 
