@@ -255,7 +255,8 @@ colnames(cts)=basename(colnames(cts))
 table(all.equal(counts,cts))
 ```
  
-We can see that, featureCounts and summarizeOverlaps produce the same results.
+We can see that, featureCounts and summarizeOverlaps produce the same results. And the counts generated from the subreadMapping.sh
+equals those generated in R.
 
 A word about summarized experiments. The way summarized experiments are set up is that the rownames of the colData or metadata, also sometimes called phenoData, must match the colnames of the assay data -- the count data or expression data. Similarly, the rownames of the assay data must match the rowRanges of the featureData. This is all part of Bioconductor's way of standardizing structures so that they work well with each other across and within packages.
 
