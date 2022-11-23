@@ -30,7 +30,7 @@ cd untrimmed_fastq
 
 
 What if we want to move back up and out of this directory and to our top level 
-directory? Can we type `cd data`? Try it and see what happens.
+directory? Can we type `cd shell_data`? Try it and see what happens.
 
 
 
@@ -113,7 +113,13 @@ identify the name of the text file in that directory.
 Hint: hidden files and folders in Unix start with `.`, for example `.my_hidden_directory`
 
 ## Solution
+```{zsh, engine.opts="-i"}
 
+cd
+cd ~/shell_data
+ls -a
+
+```
 
 
 
@@ -207,13 +213,13 @@ pwd
 You will see: 
 
 
-/Users/dcuser
+/Users/your-username
 
 This is the full name of your home directory. This tells you that you
-are in a directory called `dcuser`, which sits inside a directory called
+are in a directory called `your-username`, which sits inside a directory called
 `home` which sits inside the very top directory in the hierarchy. The
 very top of the hierarchy is a directory called `/` which is usually
-referred to as the *root directory*. So, to summarize: `dcuser` is a
+referred to as the *root directory*. So, to summarize: `your-username` is a
 directory in `home` which is a directory in `/`. More on `root` and
 `home` in the next section.
 
@@ -221,7 +227,7 @@ Now enter the following command:
 
 ```{zsh, eval=FALSE, engine="sh"}
 
-cd /Users/dcuser/shell_data/.hidden
+cd /Users/ggiaever/shell_data/.hidden
 
 ```
 
@@ -296,7 +302,7 @@ home directory. Dealing with the `home` directory is very common.
 The tilde character, `~`, is a shortcut for your home directory.
 In our case, the `root` directory is __two__ levels above our
 `home` directory, so `cd` or `cd ~` will take you to
-`/Users/dcuser` and `cd /` will take you to `/`. Navigate to the
+`/Users/your-username` and `cd /` will take you to `/`. Navigate to the
 home directory:
 
 
