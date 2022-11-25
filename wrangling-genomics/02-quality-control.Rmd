@@ -4,15 +4,13 @@
 
 library(knitr)
 
-knitr::opts_chunk$set(engine.opts = list(zsh = "-i"), engine = list('zsh'),engine.path = list('/bin/zsh'))
+knitr::opts_chunk$set(
+  engine = list('zsh'),
+  engine.path = list('/bin/zsh'),
+  engine.opts = list(zsh = "-i")
+                      )
 
 ```
-
-**A note on sourcing bashrc**
-
-In the knitr setup we 
-
-It won't change your shell though if your normal shell is zsh, but it is important for making the shell interactive, which allows conda to be activated in this environment.
 
 ## Bioinformatic workflows
 
@@ -51,7 +49,7 @@ To download the data, run the commands below.
 
 Here we are using the `-p` option for `mkdir`. This option allows `mkdir` to create the new directory, even if one of the parent directories does not already exist. It also supresses errors if the directory already exists, without overwriting that directory. 
 
-It will take about 5' to download the files.
+It will take about 5' to download the files. You should have them already.
 ```{zsh engine.opts='-i'}
 
 mkdir -p ~/dc_workshop/data/untrimmed_fastq/
@@ -59,9 +57,10 @@ cd ~/dc_workshop/data/untrimmed_fastq
 
 ```
 
-curl -O option writes the file, maintains the original name
-those with PCs, use wget and the ftp
+
+**macOS; curl -O option writes the file, maintains the original name**
 ```{zsh, eval=FALSE, engine="sh"}
+
 cd ~/dc_workshop/data/untrimmed_fastq
 curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_1.fastq.gz
 curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_2.fastq.gz
@@ -69,6 +68,19 @@ curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_1.fa
 curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_2.fastq.gz
 curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_1.fastq.gz
 curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_2.fastq.gz
+
+```
+
+**Windows**
+```{zsh, eval=FALSE, engine="sh"}
+
+cd ~/dc_workshop/data/untrimmed_fastq
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_2.fastq.gz
 
 ```
 

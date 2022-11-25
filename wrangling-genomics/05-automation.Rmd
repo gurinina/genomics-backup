@@ -2,7 +2,11 @@
 
 ```{r, include = FALSE}
 
-knitr::opts_chunk$set(engine.opts = list(zsh = '/bin/zsh'))
+knitr::opts_chunk$set(
+  engine = list('zsh'),
+  engine.path = list('/bin/zsh'),
+  engine.opts = list(zsh = "-i")
+                      )
 
 ```
 
@@ -67,7 +71,7 @@ Within the Bash shell you can create variables at any time (as we did
 above, and during the 'for' loop lesson). Assign any name and the
 value using the assignment operator: '='. You can check the current
 definition of your variable by typing into your script: echo $variable_name.
-{: .callout}
+
 
 In this lesson, we will use two shell scripts to automate the variant calling analysis: one for FastQC analysis (including creating our summary file), and a second for the remaining variant calling. To write a script to run our FastQC analysis, we will take each of the commands we entered to run FastQC and process the output files and put them into a single file with a `.sh` extension. The `.sh` is not essential, but serves as a reminder to ourselves and to the computer that this is a shell script.
 
@@ -191,7 +195,7 @@ cat */summary.txt ~/dc_workshop/docs/fastqc_summaries.txt
 
 Save your file and exit `nano`. We can now run our script:
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/dc_workshop/scripts
 bash read_qc.sh
@@ -448,7 +452,7 @@ a `#` character will be interpreted as a comment, bash will not try to run these
 
 Now we can run our script:
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/dc_workshop/scripts
 bash run_variant_calling.sh

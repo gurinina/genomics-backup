@@ -145,7 +145,7 @@ explanation of how they work is advanced for this particular lesson. For now we
 will use these numbers as a default and recognize they are needed to for Trimmomatic
 to run properly. This command will take a few minutes to run.
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/dc_workshop/data/untrimmed_fastq
 

@@ -6,7 +6,7 @@
 
 We are going to use a long-term sequencing dataset from a population of *Escherichia coli*. 
 
- - **What is *E. coli*?**
+**What is *E. coli*?**
     - *E. coli* are rod-shaped bacteria that can survive under a wide variety of conditions including variable temperatures, nutrient availability, and oxygen levels. Most strains are harmless, but some are associated with food-poisoning. 
     
 ![ [Wikimedia](https://species.wikimedia.org/wiki/Escherichia_coli#/media/File:EscherichiaColi_NIAID.jpg) ](img/172px-EscherichiaColi_NIAID.jpg)
@@ -14,7 +14,7 @@ We are going to use a long-term sequencing dataset from a population of *Escheri
 **Why is *E. coli* important?**
     - *E. coli* are one of the most well-studied model organisms in science. As a single-celled organism, *E. coli* reproduces rapidly, typically doubling its population every 20 minutes, which means it can be manipulated easily in experiments. In addition, most naturally occurring strains of *E. coli* are harmless. Most importantly, the genetics of *E. coli* are fairly well understood and can be manipulated to study adaptation and evolution.
     
-# The data
+## The data
 
  - The data we are going to use is part of a long-term evolution experiment led by [Richard Lenski](https://en.wikipedia.org/wiki/E._coli_long-term_evolution_experiment).
  
