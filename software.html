@@ -354,6 +354,16 @@ display: none;
 
 <div id="software" class="section level1">
 <h1>Software</h1>
+<p><strong>Note: When I’m not running these commands, I’m setting the
+chunk to <code>zsh, eval=FALSE, engine=&quot;sh&quot;</code>, you need to reset
+them to <code>zsh</code> or <code>zsh engine.opts=&#39;-i&#39;</code> if you
+want them to run. I would suggest you copy and paste them into your
+terminal though and not run them all at once so you can carefully
+monitor what is happening. Running bash in Rmarkdown also doesn’t work
+well – chunks do not communicate with eachother – so one chunk will have
+no memory of something that was done in another chunk, and you have to
+reset your working directory for every chunk. It’s also much slower. For
+these reasons it is better to copy paste into your terminal</strong></p>
 <p><strong>Conda for bioinformatics</strong> This document accompanies
 the DIYtranscriptomics course and is intended to provide basic guidance
 in the installation of various bioinformatics softwares using Conda. If
@@ -394,30 +404,21 @@ directory/miniconda3-intel so you remember you are installing the intel
 version in case you also want to install the arm64 version later (but
 you won’t need it for this class). You will have to firts install
 Rosetta 2 if you don’t have it: (see below)**</p>
-<p><strong>Note: When I’m not running these commands, I’m setting the
-chunk to <code>bash, eval=FALSE, engine=&quot;sh&quot;</code>, you need to reset
-them to <code>bash</code> or <code>bash engine.opts=&#39;-l&#39;</code> if you
-want them to run. I would suggest you copy and paste them into your
-terminal though and not run them all at once so you can carefully
-monitor what is happening.Running bash in Rmarkdown also doesn’t work
-well – chunks do not communicate with eachother – so one chunk will have
-no memory of something that was done in another chunk, for that reason
-it is better to copy paste into your terminal</strong></p>
-<pre class="bash"><code>
+<pre class="zsh"><code>
 softwareupdate --install-rosetta
 </code></pre>
 <p>Move this shell script (.sh) file to your home folder on your Mac
 ($HOME directory), and enter the following line into your terminal
 application.</p>
 <p>Install this version even if you have an m1 mac:</p>
-<pre class="bash"><code>
+<pre class="zsh"><code>
 
 curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
 bash Miniconda3-latest-MacOSX-x86_64.sh -b -p $HOME/
 </code></pre>
 <p><strong>Note: for mac m1 users</strong></p>
 <p>Install this version even if you have an m1 mac:</p>
-<pre class="bash"><code>
+<pre class="zsh"><code>
 
 curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
 sh Miniconda3-latest-MacOSX-x86_64.sh
@@ -425,37 +426,38 @@ sh Miniconda3-latest-MacOSX-x86_64.sh
 <p>When the program says Miniconda3 will now be install into this
 location:, say /Users/yourusername/miniconda3</p>
 <p>specify a different location and type:
-/Users/yourusername/miniconda3-intel</p>
+/Users/your-username/miniconda3-intel</p>
 <p>This will bring you through the install process When it asks if you
 want to initialize conda, say no. When it is done, type:</p>
-<pre class="bash"><code>
+<pre class="zsh"><code>
 conda config --set auto_activate_base false
 </code></pre>
 <p>Now ‘source’ conda so that it is available to you from the command
 line regardless of which directory you’re in</p>
-<pre class="bash"><code>
+<pre class="zsh"><code>
 source $HOME/miniconda3/bin/activate
 </code></pre>
 <p><strong>For mac m1 users:</strong> You need to switch to to the intel
 architecture to activate. You need to do that everytime you use conda.
 You do that like this:</p>
-<pre class="bash"><code>
+<pre class="zsh"><code>
 
 source $HOME/miniconda3-intel/bin/activate
 </code></pre>
 <p>This next step may only be necessary if you’re running a newer MacOS
 that uses the zsh shell. <strong>I actually don’t think you need it, at
 least not on a mac m1 mac.</strong></p>
-<pre class="bash"><code>
+<pre class="zsh"><code>
 conda init zsh
 </code></pre>
 <p>then type the following:</p>
-<pre class="bash"><code>
+<pre class="zsh"><code>
 sudo ln -s $HOME/miniconda3/etc/profile.d/conda.sh </code></pre>
 <p>You only need to do this once.</p>
 <p><strong>For mac m1 users:</strong></p>
-<pre class="bash"><code>
-sudo ln -s $HOME/miniconda3-intel/etc/profile.d/conda.sh </code></pre>
+<pre class="zsh"><code>
+sudo ln -s $HOME/miniconda3-intel/etc/profile.d/conda.sh
+</code></pre>
 <p><strong>Windows OS</strong> We will first install Miniconda and then
 add three new locations to your system environment path for conda to be
 recognized as a command in your Command Prompt.</p>
@@ -507,7 +509,6 @@ whatever you’d like</p>
 <pre class="zsh"><code>
 conda create --name rnaseq 
 </code></pre>
-<p>Now activate your newly created environment</p>
 <p>Now activate your newly created environment</p>
 <pre class="zsh"><code>
 
@@ -617,7 +618,7 @@ line into your terminal.</p>
 <p>Some, but not all, of the software we installed using Conda above is
 also available for MacOS using Homebrew. Go ahead and install as
 follows:</p>
-<pre class="bash"><code>
+<pre class="zsh"><code>
 brew install fastqc
 brew install samtools
 </code></pre>
@@ -706,7 +707,10 @@ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_2.fastq
 <p>We will also download a set of trimmed FASTQ files to work with.
 These are small subsets of our real trimmed data, and will enable us to
 run our variant calling workflow quite quickly.</p>
-<p>I couldn’t get this to work – just do it manually –</p>
+<p>I couldn’t get this to work – just download it manually by going to
+the site, then you can use the commands starting with mkdir -p after
+you’ve downloaded the sub.tar.gz file. <strong>MacOS &amp;
+Windows</strong></p>
 <pre class="zsh"><code>
 cd ~/dc_workshop
 curl L -o sub.tar.gz https://ndownloader.figshare.com/files/14418248
@@ -716,73 +720,13 @@ cd ~/dc_workshop/data/trimmed_fastq_small
 tar -xvf sub.tar.gz    
 mv -v sub/* ../trimmed_fastq_small
 </code></pre>
-<p><strong>files for RNA-genomics</strong> We are going to walk steps of
+<p><strong>Files for RNA-genomics</strong> We are going to walk steps of
 a Next Generation Sequencing pipeline using samples from Saccharomyces
 cerevisiae because the file is nice and small.</p>
 <p>For our examples we will focus on RNA-seq as it is the most
 manageable computationally as opposed to methylation, Chip-chip and DNA
 variant analysis. Its also, one of the more frequently used technologies
 in research, likely for this reason.</p>
-<pre><code>    added by them:   BAM/ERR458501.bam.indel.vcf</code></pre>
-<p>= added by them: FASTQ/.DS_Store added by them: FASTQ/ERR458493.fastq
-added by them: FASTQ/ERR458493.fastq.gz added by them:
-FASTQ/ERR458494.fastq.gz added by them: FASTQ/ERR458495.fastq.gz added
-by them: FASTQ/ERR458500.fastq.gz added by them:
-FASTQ/ERR458501.fastq.gz added by them: FASTQ/ERR458502.fastq.gz added
-by them: FASTQ/Saccharomyces_cerevisiae.R64-1-1.96.gtf added by them:
-FASTQ/Saccharomyces_cerevisiae.R64-1-1.96.gtf.gz added by them:
-FASTQ/multiqc_data/multiqc.log added by them:
-FASTQ/multiqc_data/multiqc_citations.txt added by them:
-FASTQ/multiqc_data/multiqc_data.json added by them:
-FASTQ/multiqc_data/multiqc_fastqc.txt added by them:
-FASTQ/multiqc_data/multiqc_general_stats.txt added by them:
-FASTQ/multiqc_data/multiqc_sources.txt added by them:
-FASTQ/multiqc_data_1/multiqc.log added by them:
-FASTQ/multiqc_data_1/multiqc_citations.txt added by them:
-FASTQ/multiqc_data_1/multiqc_data.json added by them:
-FASTQ/multiqc_data_1/multiqc_fastqc.txt added by them:
-FASTQ/multiqc_data_1/multiqc_general_stats.txt added by them:
-FASTQ/multiqc_data_1/multiqc_sources.txt added by them:
-FASTQ/multiqc_data_2/multiqc.log added by them:
-FASTQ/multiqc_data_2/multiqc_citations.txt added by them:
-FASTQ/multiqc_data_2/multiqc_data.json added by them:
-FASTQ/multiqc_data_2/multiqc_fastqc.txt added by them:
-FASTQ/multiqc_data_2/multiqc_general_stats.txt added by them:
-FASTQ/multiqc_data_2/multiqc_snippy.txt added by them:
-FASTQ/multiqc_data_2/multiqc_sources.txt added by them:
-FASTQ/multiqc_report.html added by them: FASTQ/multiqc_report_1.html
-added by them: FASTQ/multiqc_report_2.html added by them:
-FASTQ/myBAM_filtered.bam added by them:
-FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.96.gtf.gz added by them:
-FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa added by
-them: FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.fai
-added by them:
-FASTQ/r64/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz added by
-them: FASTQ/r64/r64bread.index.00.b.array added by them:
-FASTQ/r64/r64bread.index.00.b.tab added by them:
-FASTQ/r64/r64bread.index.files added by them:
-FASTQ/r64/r64bread.index.log added by them:
-FASTQ/r64/r64bread.index.reads added by them: FASTQ/subreadMapping.sh
-added by us: RNA-genomics/01-reads2counts.Rmd added by us:
-RNA-genomics/02-bamfiles.Rmd added by them: css/style.css added by them:
-css/toc.css both added: figures/DESeq2_normalization.png both added:
-figures/DESeq2_step1.png both added: figures/DESeq2_step2.png both
-added:
-figures/RNA-seq-analysis-flow-chart-An-example-RNA-seq-analysis-workflow-is-depicted-for-a.png
-both added: figures/RNAseq_workflow.png both added:
-figures/count-matrix.png both added: figures/count_modes.png both added:
-figures/countingreads_fc.png both added: figures/counts-workflow.png
-both added: figures/f1000research-4-7573-g0000.jpeg both added:
-figures/featurecount_ambiguous.png both added: figures/gtf.png both
-added: figures/multioverlap.png both added: figures/rnaseq_workflow2.png
-both added: figures/rnaseqpipeline.png both added: figures/union.png
-both added: figures/variant_calling_workflow_cleanup.png both added:
-figures/workflow_DESeq2.png both added: figures/workflow_gene_quant.png
-deleted by us: rna-genomics/_bookdown.yml deleted by us:
-rna-genomics/_output.yml deleted by us: rna-genomics/aln.bam both
-deleted: rna-genomics/bamfiles.Rmd deleted by us: rna-genomics/index.Rmd
-both deleted: rna-genomics/reads2counts.Rmd both deleted:
-rna-genomics/style.css added by us: wrangling-genomics/css/style.css</p>
 <p>Download the file called: shell_data.tar.gz and extract it into a
 directory call shell_data in your home folder
 (/Users/your-username/shell_data)</p>
