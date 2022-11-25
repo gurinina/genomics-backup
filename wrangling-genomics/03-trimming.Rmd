@@ -2,7 +2,11 @@
 
 ```{r, include = FALSE}
 
-knitr::opts_chunk$set(engine.opts = list(zsh = '/bin/zsh'))
+knitr::opts_chunk$set(
+  engine = list('zsh'),
+  engine.path = list('/bin/zsh'),
+  engine.opts = list(zsh = "-i")
+                      )
 
 ```
 
@@ -214,7 +218,7 @@ gzip -f SRR2584863_1.fastq
 
 ```
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/dc_workshop/data/untrimmed_fastq/
 
@@ -268,7 +272,7 @@ to a new subdirectory within our `data/` directory.
 
 
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/dc_workshop/data/untrimmed_fastq
 mkdir -p ../trimmed_fastq

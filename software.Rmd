@@ -415,7 +415,8 @@ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_2.fastq
 We will also download a set of trimmed FASTQ files to work with. These are small subsets of our real trimmed data, 
 and will enable us to run our variant calling workflow quite quickly. 
 
-I couldn't get this to work -- just do it manually -- 
+I couldn't get this to work -- just download it manually by going to the site, then you can use the commands starting with mkdir -p after you've downloaded the sub.tar.gz file.
+**MacOS & Windows**
 ```{zsh, eval=FALSE, engine="sh"}
 
 cd ~/dc_workshop

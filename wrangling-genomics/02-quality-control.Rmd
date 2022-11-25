@@ -4,7 +4,7 @@
 
 library(knitr)
 
-knitr::opts_chunk$set(engine.opts = list(zsh = '/bin/zsh'))
+knitr::opts_chunk$set(engine.opts = list(zsh = "-i"), engine = list('zsh'),engine.path = list('/bin/zsh'))
 
 ```
 
@@ -330,7 +330,7 @@ We need to run this in the terminal -- it takes too long here --
 
 
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh engine.opts='-i'}
 
 cd ~/dc_workshop/data/untrimmed_fastq
 source $HOME/miniconda3-intel/bin/activate
@@ -385,7 +385,7 @@ We want to keep our data files and our results files separate, so we
 will move these
 output files into a new directory within our `results/` directory.
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh engine.opts='-i'}
 
 cd ~/dc_workshop/data/untrimmed_fastq/
 mkdir -p ~/dc_workshop/results/fastqc_untrimmed_reads
@@ -413,7 +413,7 @@ we are transferring. Let's put it on our dc_workshop folder for now. Open a new
 tab in your terminal program (you can use the pull down menu at the
 top of your screen or the Cmd+t keyboard shortcut) and type:
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh engine.opts='-i'}
 
 mkdir -p ~/dc_workshop/fastqc_html
 mkdir -p ~/dc_workshop/fastqc_html/untrimmed
@@ -502,7 +502,7 @@ do
 unzip $filename
 done
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh engine.opts='-i'}
 
 cd ~/dc_workshop/results/fastqc_untrimmed_reads/
 find . -name "*.zip" | while read filename; do unzip -o -d "`dirname "$filename"`" "$filename"; done;

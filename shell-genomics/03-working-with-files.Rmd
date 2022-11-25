@@ -2,9 +2,11 @@
 
 ```{r include = FALSE}
 
-Sys.setenv(BASH_ENV="~/.bashrc86")
- 
-knitr::opts_chunk$set(engine.opts = list(bash="--init-file ~/.bashrc86 -i", zsh = '/bin/zsh'))
+
+knitr::opts_chunk$set(
+          engine = list(bash = 'bash',zsh ='zsh'),
+          engine.path = list(zsh = '/bin/zsh',bash ='/bin/bash'),
+          engine.opts = list(bash = "-i", zsh = "-i"))
 
 ```
 
@@ -141,11 +143,11 @@ For example, if your history looked like this:
 260  ls /usr/bin/*.sh
 261  ls *R1*fastq
 
-then you could repeat command #260 by entering:
+then you could repeat command #0 by entering:
 
 ```{bash, eval=FALSE, engine="sh"}
 
-!260
+!50
 
 ```
 
@@ -188,7 +190,7 @@ would write sed -n 3,8p
 
 Enter the following command from within the `untrimmed_fastq` directory: 
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/shell_data/untrimmed_fastq
 sed -n 3,8p SRR098026.fastq 
@@ -364,7 +366,7 @@ much signal was captured for the base incorporation.
 
 ## Exercise
 
-1. What is the last line of the `~/shell_data/untrimmed_fastq/SRR098026.fastq` file?
+1. What is the last line of the `~/shell_data/untrimmed_fastq/SRR097977.fastq` file?
 
 2.  From your home directory, and without changing directories,
 use one short command to print the contents of all of the files in

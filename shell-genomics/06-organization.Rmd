@@ -3,11 +3,12 @@
 
 ```{r include = FALSE}
 
-Sys.setenv(BASH_ENV="~/.bashrc")
- 
-knitr::opts_chunk$set(engine.opts = list(bash="--init-file ~/.bashrc -i", zsh = '/bin/zsh'))
+
+knitr::opts_chunk$set(
+          engine.opts = list(bash = "-i"))
 
 ```
+**Note: this .Rmd is run in bash as there are no zsh specific commands and there are several bash-specific commands. If you are running zsh, type bash  into your terminal to switch shells before you begin.**
 
 Getting your project started
 
@@ -49,9 +50,9 @@ In this exercise we will setup a file system for the project we will be working 
 
 We will start by creating a directory that we can use for the variant section. First navigate to your home directory. Then confirm that you are in the correct directory using the `pwd` command.
 
-```{zsh, engine.opts="-i"}
+```{bash}
 
-cd
+cd ~
 
 pwd
 
@@ -59,7 +60,7 @@ pwd
 
 You should see the output: 
 
-/Users/dcuser  
+/Users/your username  
 
 ## Tip  
 
@@ -75,20 +76,18 @@ Use the `mkdir` command to make the following directories:
 - `dc_workshop/data`
 - `dc_workshop/results`
 
-```{zsh, eval=FALSE, engine="sh"}
-
-cd ~/dc_workshop/data/untrimmed_fastq`
-nano README.txt
-
-```
+**Note: if you've already downloaded the fastq files into ~/dc_workshop/data/untrimmed_fastq be careful not to remake the data directory**
 
 ## Solution
+```{bash}
+
+```
 
 Use `ls -R` to verify that you have created these directories. The `-R` option for `ls` stands for recursive. This option causes
 `ls` to return the contents of each subdirectory within the directory
 iteratively. 
 
-```{zsh, eval=FALSE, engine="sh"}
+```{bash}
 
 cd ~
 ls -R dc_workshop
@@ -146,7 +145,8 @@ files. Let's document the work we have done on our project so far.
 
 View the commands that you have used so far during this session using `history`:
 
-```{bash, engine.opts="-i"}
+
+```{bash}
 
 history | head -n 10
 
@@ -157,7 +157,7 @@ several commands that focus on just what we need for this project.
 
 View the last n lines of your history (where n = approximately the last few lines you think relevant). For our example, we will use the last 7:
 
-```{bash, engine.opts="-i"}
+```{bash}
 
 history | tail -n 7
 
@@ -166,13 +166,13 @@ history | tail -n 7
 ## Exercise
 Using your knowledge of the shell, use the append redirect `>>` to create a file called
 `dc_workshop_log_XXXX_XX_XX.sh` (Use the four-digit year, two-digit month, and two digit day, e.g.
-`dc_workshop_log_2022_11_.XX.sh`)  
+`dc_workshop_log_2022_11_.27.sh`)  
 
 ## Solution
 
-```{bash, engine.opts="-i"}
+```{bash}
 
-history | tail -n 7 > dc_workshop_log_2022_11_27.sh
+
 
 ```
 
@@ -181,13 +181,13 @@ Note we used the last 7 lines as an example, the number of lines may vary.
 You may have noticed that your history contains the `history` command itself. To remove this redundancy
 from our log, let's use the `nano` text editor to fix the file:  
 
-```{zsh, eval=FALSE, engine="sh"}
+```{bash, eval=FALSE, engine="sh"}
 
 nano dc_workshop_log_2022_11_27.sh
 
 ```
 
-(Remember to replace the `2022_11_27` with your workshop date.)
+(Remember to replace the `XXXX_XX_XX` with your workshop date.)
 
 From the `nano` screen, you can use your cursor to navigate, type, and delete any redundant lines.   
 
@@ -209,8 +209,9 @@ Here are some useful keyboard shortcuts for moving around within a text document
 Add a date line and comment to the line where you have created the directory. Recall that any
 text on a line after a `#` is ignored by zsh when evaluating the text as code. For example:   
 
-2022_11_27  
-Created sample directories for the Data Carpentry workshop  
+`#` 2022_11_27  Created sample directories for the Data Carpentry workshop  
+
+(You don't need the backticks, but I need them here because otherwise rmarkdown will interpret them as as a header)
 
 Next, remove any lines of the history that are not relevant by navigating to those lines and using your 
 delete key. Save your file and close `nano`.
@@ -222,30 +223,35 @@ Created sample directories for the Data Carpentry workshop
 
 cd ~
 
-mkdir dc_workshop
-mkdir dc_workshop/docs
-mkdir dc_workshop/data
-mkdir dc_workshop/results
+mkdir -p dc_workshop
+mkdir -p dc_workshop/docs
+mkdir -p dc_workshop/data
+mkdir -p dc_workshop/results
+
+**Note: the -p is an option; it won't give an error in case the directory already exists.**
+
 
 If you keep this file up to date, you can use it to re-do your work on your project if something happens to your results files. To demonstrate how this works, first delete
 your `dc_workshop` directory and all of its subdirectories. Look at your directory 
 contents to verify the directory is gone. 
 
-```{zsh, eval=FALSE, engine="sh"}
+**Note: I have this as eval=FALSE, because I have files saved there already, if you don't you should run it.** 
+```{bash, eval=FALSE, engine="sh"}
 
+cd ~
 rm -r dc_workshop
 ls
 
 ```
 
-shell_data	dc_workshop_log_2022_11_27.sh
-
-Then run your workshop log file as a zsh script. You should see the `dc_workshop`
+Then run your workshop log file as a basn script. You should see the `dc_workshop`
 directory and all of its subdirectories reappear. 
 
-```{zsh, eval=FALSE, engine="sh"}
+**Note: I have this as eval=FALSE, but you'll want to run it in your terminal, unless you have files saved there already, then just modify your script accordingly.**
+```{bash, eval=FALSE, engine="sh"}
 
-bash dc_workshop_log_2017_10_27.sh
+cd ~
+bash dc_workshop_log_2022_11_27.sh
 ls
 
 ```
@@ -264,6 +270,64 @@ skills to carrying out more sophisticated bioinformatics
 analysis work. Don't worry if everything doesn't feel perfectly comfortable yet. We're
 going to have many more opportunities for practice as we move forward on our 
 bioinformatics journey!
+
+**If you don't already have them: Files for wrangling-genomics, run these commands in the TERMINAL**
+
+First make these directories in your home directory by typing
+
+```{bash, eval=FALSE, engine="sh"}
+mkdir -p ~/dc_workshop/data/untrimmed_fastq
+```
+
+Then download these files into that directory (takes about 5' to run):
+**macOS**
+```{bash, eval=FALSE, engine="sh"}
+
+
+cd ~/dc_workshop/data/untrimmed_fastq
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_1.fastq.gz
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_2.fastq.gz
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_1.fastq.gz
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_2.fastq.gz
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_1.fastq.gz
+curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_2.fastq.gz
+
+```
+
+**Windows**
+```{bash, eval=FALSE, engine="sh"}
+
+
+cd ~/dc_workshop/data/untrimmed_fastq
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/004/SRR2589044/SRR2589044_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/003/SRR2584863/SRR2584863_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_2.fastq.gz
+
+```
+
+We will also download a set of trimmed FASTQ files to work with. These are small subsets of our real trimmed data, 
+and will enable us to run our variant calling workflow quite quickly. 
+
+I couldn't get this to work -- just download it manually by going to the site, then you can use the commands starting with mkdir -p after you've downloaded the sub.tar.gz file.
+**MacOS & Windows**
+```{bash, eval=FALSE, engine="sh"}
+
+cd ~/dc_workshop
+curl L -o sub.tar.gz https://ndownloader.figshare.com/files/14418248
+
+mkdir -p ~/dc_workshop/data/trimmed_fastq_small 
+tar -xvf sub.tar.gz    
+
+mv -v sub/* dc_workshop/data/trimmed_fastq_small
+rm -r sub
+
+```
+
+
+
 
 ## References
 [A Quick Guide to Organizing Computational Biology Projects](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424)

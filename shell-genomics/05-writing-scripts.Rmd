@@ -2,7 +2,11 @@
 
 ```{r include = FALSE}
 
-knitr::opts_chunk$set(engine.opts = list(zsh = '/bin/zsh'))
+knitr::opts_chunk$set(
+  engine = list('zsh'),
+  engine.path = list('/bin/zsh'),
+  engine.opts = list(zsh = "-i")
+                      )
 
 ```
 
@@ -131,7 +135,7 @@ Type your `grep` command into the file and save it as before. Be careful that yo
 
 Now comes the neat part. We can run this script. Type:
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/shell_data/untrimmed_fastq
 
@@ -158,7 +162,7 @@ We had to type `zsh` because we needed to tell the computer what program to use 
 
 First, let's look at the current permissions.
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/shell_data/untrimmed_fastq
 
@@ -168,7 +172,7 @@ ls -l bad-reads-script.sh
 
 We see that it says `-rw-r--r--`. This shows that the file can be read by any user and written to by the file owner (you). We want to change these permissions so that the file can be executed as a program. We use the command `chmod` like we did earlier when we removed write permissions. Here we are adding (`+`) executable permissions (`+x`).
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/shell_data/untrimmed_fastq
 
@@ -178,7 +182,7 @@ chmod +x bad-reads-script.sh
 
 Now let's look at the permissions again.
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/shell_data/untrimmed_fastq
 
@@ -187,7 +191,7 @@ ls -l bad-reads-script.sh
 
 Now we see that it says `-rwxr-xr-x`. The `x`'s that are there now tell us we can run it as a program. So, let's try it! We'll need to put `./` at the beginning so the computer knows to look here in this directory for the program.
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
 cd ~/shell_data/untrimmed_fastq
 
@@ -259,6 +263,7 @@ which wget
 Once you know whether you have `curl` or `wget`, use one of the
 following commands to download the file:
 
+**Windows**
 ```{zsh, eval=FALSE, engine="sh"}
 
 cd ~/shell_data/untrimmed_fastq
@@ -269,7 +274,8 @@ wget ftp://ftp.ensemblgenomes.org/pub/release-37/bacteria/species_EnsemblBacteri
 
 or
 
-```{zsh, eval=FALSE, engine="sh"}
+**MacOS**
+```{zsh, engine.opts="-i"}
 
 cd ~/shell_data/untrimmed_fastq
 
