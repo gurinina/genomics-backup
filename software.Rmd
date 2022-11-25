@@ -11,10 +11,6 @@ knitr::opts_chunk$set(
 ```
 **Note: When I'm not running these commands, I'm setting the chunk to `zsh, eval=FALSE, engine="sh"`, you need to reset them to `zsh` or `zsh engine.opts='-i'` if you want them to run. I would suggest you copy and paste them into your  terminal though and not run them all at once so you can carefully monitor what is happening. Running bash in Rmarkdown also doesn't work well -- chunks do not communicate with eachother -- so one chunk will have no memory of something that was done in another chunk, and you have to reset your working directory for every chunk. It's also much slower. For these reasons it is better to copy paste into your terminal**
 
-
-
-
-
 **Conda for bioinformatics**
 This document accompanies the DIYtranscriptomics course and is intended to provide basic guidance in the installation of various bioinformatics softwares using Conda.  If you have problems...don't worry, we're here to help.
 
@@ -50,15 +46,11 @@ Download the script on this [page](https://docs.conda.io/en/latest/miniconda.htm
 
 **For mac m1 users:**: if you have a mac m1 chip, do not install the arm64 shell script, use the MacOSX-x86_64.sh one. Then when the software asks you where you want to install it, instead of your home directory/miniconda3 install it into your home directory/miniconda3-intel so you remember you are installing the intel version in case you also want to install the arm64 version later (but you won't need it for this class). You will have to firts install Rosetta 2 if you don't have it: (see below)**
 
-
-
 ```{zsh, eval=FALSE, engine="sh"}
 
 softwareupdate --install-rosetta
 
 ```
-
-
 
 Move this shell script (.sh) file to your home folder on your Mac ($HOME directory), and enter the following line into your terminal application. 
 
@@ -86,9 +78,7 @@ sh Miniconda3-latest-MacOSX-x86_64.sh
 
 When the program says Miniconda3 will now be install into this location:, say /Users/yourusername/miniconda3
 
-specify a different location and type: /Users/yourusername/miniconda3-intel
-
-
+specify a different location and type: /Users/your-username/miniconda3-intel
 
 This will bring you through the install process
 When it asks if you want to initialize conda, say no.
@@ -138,7 +128,8 @@ You only need to do this once.
 
 ```{zsh, eval=FALSE, engine="sh"}
 
-sudo ln -s $HOME/miniconda3-intel/etc/profile.d/conda.sh 
+sudo ln -s $HOME/miniconda3-intel/etc/profile.d/conda.sh
+
 ```
 
 **Windows OS**
@@ -192,11 +183,6 @@ Begin by creating an empty environment called 'rnaseq'...or name it whatever you
 conda create --name rnaseq 
 
 ```
-
-
-
-Now activate your newly created environment
-
 
 Now activate your newly created environment
 
@@ -439,7 +425,7 @@ mv -v sub/* ../trimmed_fastq_small
 ```
 
 
-**files for RNA-genomics**
+**Files for RNA-genomics**
 We are going to walk steps of a Next Generation Sequencing pipeline using samples from Saccharomyces cerevisiae because the file is nice and small.  
 
 For our examples we will focus on RNA-seq as it is the most manageable computationally as opposed to methylation, Chip-chip and DNA variant analysis. Its also, one of the more frequently used technologies in research, likely for this reason.
