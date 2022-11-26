@@ -91,9 +91,10 @@ ls
 ```
  
 
-```{zsh, eval=FALSE, engine="sh"}
+```{zsh, engine.opts="-i"}
 
-read_qc.sh
+cd ~/dc_workshop/scripts
+cat read_qc.sh
 
 ```
 
@@ -136,15 +137,11 @@ The next line moves us to the results directory where we have stored our output.
 cd ~/dc_workshop/results/fastqc_untrimmed_reads/
 
 
-The next five lines should look very familiar. First we give ourselves a status message to tell us that we are unzipping our ZIP
-files. Then we run our for loop to unzip all of the `.zip` files in this directory.
+The next two lines should look very familiar. First we give ourselves a status message to tell us that we are unzipping our ZIP
+files. Then we run our while loop to unzip all of the `.zip` files in this directory.
 
 echo "Unzipping..."
-for filename in *.zip
-    do
-    unzip $filename
-    done
-
+find . -name "*.zip" | while read filename; do unzip -o -d "`dirname "$filename"`" "$filename"; done;
 
 
 Next we concatenate all of our summary files into a single output file, with a status message to remind ourselves that this is 
@@ -183,19 +180,22 @@ cd ~/dc_workshop/results/fastqc_untrimmed_reads/
 echo "Unzipping..."
 
 find . -name "*.zip" | while read filename; do unzip -o -d "`dirname "$filename"`" "$filename"; done;
-for filename in *.zip
-    do
-    unzip $filename
-    done
 
 echo "Saving summary..."
 cat */summary.txt ~/dc_workshop/docs/fastqc_summaries.txt
 
+But we forgot two lines...Anyone know what they are?
 
+We need to add to the beginning (unless you have fastqc installed in homebrew):
+
+source $HOME/miniconda3-intel/bin/activate
+conda activate variant
+
+Go back to nano and add these after set -e.
 
 Save your file and exit `nano`. We can now run our script:
 
-```{zsh, engine.opts="-i"}
+```{zsh, eval=FALSE, engine="sh"}
 
 cd ~/dc_workshop/scripts
 bash read_qc.sh
@@ -217,7 +217,7 @@ We can extend these principles to the entire variant calling workflow. To do thi
 
 Download the script from [here](https://raw.githubusercontent.com/datacarpentry/wrangling-genomics/gh-pages/files/run_variant_calling.sh). Download to `~/dc_workshop/scripts`.
 
-```{zsh, engine.opts="-i"}
+```{zsh, eval=FALSE, engine="sh"}
 
 cd ~/dc_workshop/scripts
 curl -O https://raw.githubusercontent.com/datacarpentry/wrangling-genomics/gh-pages/files/run_variant_calling.sh
@@ -288,11 +288,12 @@ for fq1 in ~/dc_workshop/data/trimmed_fastq_small/*_1.trim.sub.fastq
 
 Now, we will go through each line in the script before running it.
 
-First, notice that we change our working directory so that we can create new results subdirectories
-in the right location. 
+First, we add the two lines to activate conda in the downloaded script. Notice that we change change our working directory so that we can create new results subdirectories in the right location. 
 
-```{zsh, engine.opts="-i"}
+```{zsh, eval=FALSE, engine="sh"}
 
+source $HOME/miniconda3-intel/bin/activate
+conda activate variant
 cd ~/dc_workshop/results
 
 ```
@@ -312,9 +313,6 @@ Next we index our reference genome for BWA:
 
 ```{zsh, eval=FALSE, engine="sh"}
 
- 
-source $HOME/miniconda3-intel/bin/activate
-conda activate variant
 bwa index $genome
 
 ```
@@ -350,7 +348,7 @@ to a new variable called `base`.
 ```{zsh, eval=FALSE, engine="sh"}
 
 
-dd ~/dc_workshop/data/trimmed_fastq_small
+cd ~/dc_workshop/data/trimmed_fastq_small
    base=$(basename $fq1 _1.trim.sub.fastq)
     echo "base name is $base"
     
@@ -381,9 +379,6 @@ And finally, the actual workflow steps:
 
 ```{zsh, eval=FALSE, engine="sh"}
 
- 
-source $HOME/miniconda3-intel/bin/activate
-conda activate variant
 bwa mem $genome $fq1 $fq2 $sam
 
 ```
@@ -392,14 +387,14 @@ bwa mem $genome $fq1 $fq2 $sam
 
 ```{zsh, eval=FALSE, engine="sh"}
 
- samtools view -S -b $sam $bam
+samtools view -S -b $sam $bam
  
 ```
    
 3) sort the BAM file:
 ```{zsh, eval=FALSE, engine="sh"}
 
- samtools sort -o $sorted_bam $bam 
+samtools sort -o $sorted_bam $bam 
  
 ```
 
@@ -415,9 +410,6 @@ samtools index $sorted_bam
 
 ```{zsh, eval=FALSE, engine="sh"}
 
- 
-source $HOME/miniconda3-intel/bin/activate
-conda activate variant
 bcftools mpileup -O b -o $raw_bcf -f $genome $sorted_bam
 
 ```
@@ -426,9 +418,6 @@ bcftools mpileup -O b -o $raw_bcf -f $genome $sorted_bam
 
 ```{zsh, eval=FALSE, engine="sh"}
 
- 
-source $HOME/miniconda3-intel/bin/activate
-conda activate variant
 bcftools call --ploidy 1 -m -v -o $variants $raw_bcf 
 
 ```
@@ -437,9 +426,6 @@ bcftools call --ploidy 1 -m -v -o $variants $raw_bcf
 
 ```{zsh, eval=FALSE, engine="sh"}
 
- 
-source $HOME/miniconda3-intel/bin/activate
-conda activate variant
 vcfutils.pl varFilter $variants  $final_variants
 
 ```
@@ -452,7 +438,7 @@ a `#` character will be interpreted as a comment, bash will not try to run these
 
 Now we can run our script:
 
-```{zsh, engine.opts="-i"}
+```{zsh, eval=FALSE, engine="sh"}
 
 cd ~/dc_workshop/scripts
 bash run_variant_calling.sh
@@ -476,16 +462,7 @@ Hint: You can find a copy of the output files for the subsampled trimmed FASTQ f
 ## Bonus exercise
 
 If you have time after completing the previous exercise, use `run_variant_calling.sh` to run the variant calling pipeline 
-on the full-sized trimmed FASTQ files. You should have a copy of these already in `~/dc_workshop/data/trimmed_fastq`, but if 
-you do not, there is a copy in `~/.solutions/wrangling-solutions/trimmed_fastq`. Does the number of variants change per sample?
+on the full-sized trimmed FASTQ files. Does the number of variants change per sample?
 
 ## Solution
-
-edit run_variant.calling.sh
-
-find replace: trim.sub.fastq with trim.gz
-              trimmed_fastq_small with trimmed_fastq
-              
-that's it.
- 
 

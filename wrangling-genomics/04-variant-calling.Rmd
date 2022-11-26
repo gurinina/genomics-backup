@@ -184,7 +184,8 @@ We will convert the SAM file to BAM format using the `samtools` program with the
 ```{zsh, engine.opts="-i"}
 
 cd ~/dc_workshop
-
+source $HOME/miniconda3-intel/bin/activate
+conda activate variant
 samtools view -S -b results/sam/SRR2584866.aligned.sam > results/bam/SRR2584866.aligned.bam
 
 ```
@@ -196,7 +197,8 @@ Next we sort the BAM file using the `sort` command from `samtools`. `-o` tells t
 ```{zsh, engine.opts="-i"}
 
 cd ~/dc_workshop
-
+source $HOME/miniconda3-intel/bin/activate
+conda activate variant
 samtools sort -o results/bam/SRR2584866.aligned.sorted.bam results/bam/SRR2584866.aligned.bam 
 
 ```
@@ -212,7 +214,8 @@ You can use samtools to learn more about this bam file as well.
 ```{zsh, engine.opts="-i"}
 
 cd ~/dc_workshop
-
+source $HOME/miniconda3-intel/bin/activate
+conda activate variant
 samtools flagstat results/bam/SRR2584866.aligned.sorted.bam
 
 ```
@@ -418,6 +421,8 @@ In order for us to visualize the alignment files, we will need to index the BAM 
 ```{zsh, engine.opts="-i"}
 
 cd ~/dc_workshop
+source $HOME/miniconda3-intel/bin/activate
+conda activate variant
 samtools index results/bam/SRR2584866.aligned.sorted.bam
 
 ```
@@ -433,6 +438,8 @@ In order to visualize our mapped reads, we use `tview`, giving it the sorted bam
 ```{zsh, eval=FALSE, engine="sh"}
 
 cd ~/dc_workshop
+source $HOME/miniconda3-intel/bin/activate
+conda activate variant
 samtools tview results/bam/SRR2584866.aligned.sorted.bam data/ref_genome/ecoli_rel606.fasta
 
 ```

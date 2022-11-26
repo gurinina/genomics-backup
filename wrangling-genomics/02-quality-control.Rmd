@@ -514,6 +514,7 @@ do
 unzip $filename
 done
 
+the above resulted in an endless loop when knitted, switched to this:
 ```{zsh engine.opts='-i'}
 
 cd ~/dc_workshop/results/fastqc_untrimmed_reads/

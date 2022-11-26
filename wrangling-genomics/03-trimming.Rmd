@@ -247,22 +247,12 @@ ls
 ```
 ## Exercise
 
-Remember SRR2584863_2.trim.fastq.gz failed per base sequence quality test. 
-That would predict that the read lengths of SRR2584863_2.trim.fastq.gz would be shorter than 
-SRR2584863_1.trim.fastq.gz. Can you think of a way to compare the read lengths of 
-SRR2584863_1.trim.fastq.gz and SRR2584863_2.trim.fastq.gz?
-
-
-
-
-
-## Exercise
-
 We trimmed our fastq files with Nextera adapters, 
 but there are other adapters that are commonly used.
 What other adapter files came with Trimmomatic?
 
 ## Solution
+
 
 
 
@@ -292,3 +282,5 @@ trimming. Save the HTML files in ~/dc_workshop/fastqc_html/trimmed,
 then take a look at the html files in your browser.
 
 ## Solution
+
+
